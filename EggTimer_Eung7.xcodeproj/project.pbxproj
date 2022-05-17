@@ -19,6 +19,7 @@
 		E556507B2832B38C005229F1 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = E556507A2832B38C005229F1 /* RxRelay */; };
 		E556507D2832B38C005229F1 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E556507C2832B38C005229F1 /* RxSwift */; };
 		E556507F2832B429005229F1 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556507E2832B429005229F1 /* MainTableViewCell.swift */; };
+		E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5565080283344B0005229F1 /* MainTableFooterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		E556507028329257005229F1 /* Something.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Something.swift; sourceTree = "<group>"; };
 		E556507528329D27005229F1 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		E556507E2832B429005229F1 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
+		E5565080283344B0005229F1 /* MainTableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableFooterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,15 +72,24 @@
 			children = (
 				E556505C283287CB005229F1 /* AppDelegate.swift */,
 				E556505E283287CB005229F1 /* SceneDelegate.swift */,
-				E556507028329257005229F1 /* Something.swift */,
-				E5565060283287CB005229F1 /* MainViewController.swift */,
+				E5565082283344BE005229F1 /* Entities */,
 				E556507528329D27005229F1 /* MainViewModel.swift */,
+				E5565060283287CB005229F1 /* MainViewController.swift */,
 				E556507E2832B429005229F1 /* MainTableViewCell.swift */,
+				E5565080283344B0005229F1 /* MainTableFooterView.swift */,
 				E5565065283287CD005229F1 /* Assets.xcassets */,
 				E5565067283287CD005229F1 /* LaunchScreen.storyboard */,
 				E556506A283287CD005229F1 /* Info.plist */,
 			);
 			path = EggTimer_Eung7;
+			sourceTree = "<group>";
+		};
+		E5565082283344BE005229F1 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				E556507028329257005229F1 /* Something.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +177,7 @@
 				E556505D283287CB005229F1 /* AppDelegate.swift in Sources */,
 				E556507128329257005229F1 /* Something.swift in Sources */,
 				E556507F2832B429005229F1 /* MainTableViewCell.swift in Sources */,
+				E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */,
 				E556505F283287CB005229F1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -56,7 +56,7 @@ class MainTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        updateUI()
+        setupUI()
         bind()
     }
     
@@ -65,7 +65,7 @@ class MainTableViewCell: UITableViewCell {
         timeLabel.text = "\(something.time)"
     }
     
-    func updateUI() {
+    func setupUI() {
         contentView.backgroundColor = .systemYellow
         
         [ playButton, timeLabel, nameLabel, deleteButton ]

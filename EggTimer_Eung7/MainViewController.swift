@@ -58,6 +58,10 @@ class MainViewController: UIViewController {
         tableView.rowHeight = 80
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .white
+        tableView.tableFooterView = MainTableFooterView(frame: CGRect(
+            origin: CGPoint(x: 0, y: 0),
+            size: CGSize(width: UIScreen.main.bounds.width, height: 80.0))
+        )
         
         return tableView
     }()
@@ -120,11 +124,12 @@ class MainViewController: UIViewController {
                         print("PlayButtonTapped!")
                     })
                     .disposed(by: self.disposeBag)
-
+                
                 cell.deleteButton.rx.tap
                     .subscribe(onNext: {
                         print("DeleteButtonTapped!")
                     })
+                    .disposed(by: self.disposeBag)
             }
             .disposed(by: disposeBag)
     }
