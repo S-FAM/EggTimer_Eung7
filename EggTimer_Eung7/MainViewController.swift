@@ -7,8 +7,12 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class MainViewController: UIViewController {
+    let viewModel = MainViewModel()
+    let disposeBag = DisposeBag()
     
     var timeLabel: UILabel = {
         let label = UILabel()
@@ -32,7 +36,7 @@ class MainViewController: UIViewController {
     var startButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.title = "Start"
-        config.baseBackgroundColor = .systemPink
+        config.baseBackgroundColor = .black
         config.baseForegroundColor = .systemBackground
         
         let button = UIButton(configuration: config)
@@ -47,9 +51,13 @@ class MainViewController: UIViewController {
         return view
     }()
     
-    lazy var tableView: UITableView = {
+    var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .systemBlue
+        tableView.backgroundColor = .systemYellow
+        tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
+        tableView.rowHeight = 80
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .white
         
         return tableView
     }()
@@ -59,6 +67,7 @@ class MainViewController: UIViewController {
         
         updateUI()
         updateNavigationBar()
+        bind()
     }
     
     func updateNavigationBar() {
@@ -96,5 +105,27 @@ class MainViewController: UIViewController {
             make.top.equalTo(bottomLineView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    func bind() {
+        viewModel.eggs
+            .bind(to: tableView.rx.items(
+                cellIdentifier: MainTableViewCell.identifier,
+                cellType: MainTableViewCell.self
+            )) { row, something, cell in
+                cell.setData(something)
+                
+                cell.playButton.rx.tap
+                    .subscribe(onNext: {
+                        print("PlayButtonTapped!")
+                    })
+                    .disposed(by: self.disposeBag)
+
+                cell.deleteButton.rx.tap
+                    .subscribe(onNext: {
+                        print("DeleteButtonTapped!")
+                    })
+            }
+            .disposed(by: disposeBag)
     }
 }

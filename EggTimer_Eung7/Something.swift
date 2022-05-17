@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Stuff {
+struct Something {
     let name: String
     let time: Int
 }
