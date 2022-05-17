@@ -9,18 +9,16 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-import SystemConfiguration
 
 class MainViewController: UIViewController {
     let viewModel = MainViewModel()
-    
     let disposeBag = DisposeBag()
     
     var timeLabel: UILabel = {
         let label = UILabel()
         label.text = "07:00"
         label.font = .systemFont(ofSize: 100, weight: .bold)
-       
+        
         return label
     }()
     
@@ -53,17 +51,29 @@ class MainViewController: UIViewController {
         return view
     }()
     
-    var tableView: UITableView = {
+    lazy var tableFooterView: UIView = {
+        let footerView = MainTableFooterView(frame: CGRect(
+            origin: CGPoint(x: 0, y: 0),
+            size: CGSize(width: UIScreen.main.bounds.width, height: 80.0))
+        )
+        footerView.presentNewTaskVC = { [weak self] in
+            guard let self = self else { return }
+            let vc = NewTaskViewController()
+            
+        }
+        
+        return footerView
+    }()
+    
+    lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemYellow
         tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
         tableView.rowHeight = 80
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .black
-        tableView.tableFooterView = MainTableFooterView(frame: CGRect(
-            origin: CGPoint(x: 0, y: 0),
-            size: CGSize(width: UIScreen.main.bounds.width, height: 80.0))
-        )
+        tableView.allowsSelection = false
+        tableView.tableFooterView = tableFooterView
         
         return tableView
     }()
@@ -72,12 +82,11 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         updateUI()
-        updateNavigationBar()
         bind()
     }
     
-    func updateNavigationBar() {
-        title = "Moist Yolk Egg"
+    func updateNavigationTitle(_ food: Food) {
+        title = food.name
     }
     
     func updateUI() {
@@ -124,6 +133,7 @@ class MainViewController: UIViewController {
                 cell.setTimer = { [weak self] in
                     guard let self = self else { return }
                     self.timeLabel.text = "\(food.time)"
+                    self.updateNavigationTitle(food)
                 }
                 
                 cell.deleteFood = { [weak self] in

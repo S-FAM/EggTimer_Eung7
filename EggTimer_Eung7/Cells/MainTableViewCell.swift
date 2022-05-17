@@ -44,14 +44,12 @@ class MainTableViewCell: UITableViewCell {
     
     var timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "ddddd"
         
         return label
     }()
     
     var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "dasdf"
         
         return label
     }()
@@ -60,7 +58,6 @@ class MainTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         setupUI()
-        bind()
     }
     
     func setData(_ something: Food) {
@@ -93,10 +90,6 @@ class MainTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.leading.equalTo(deleteButton.snp.trailing).offset(8)
         }
-    }
-    
-    func bind() {
-        
     }
 }
 

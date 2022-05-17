@@ -20,6 +20,8 @@
 		E556507D2832B38C005229F1 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E556507C2832B38C005229F1 /* RxSwift */; };
 		E556507F2832B429005229F1 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556507E2832B429005229F1 /* MainTableViewCell.swift */; };
 		E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5565080283344B0005229F1 /* MainTableFooterView.swift */; };
+		E57C442B2833CAE400CEE439 /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57C442A2833CAE400CEE439 /* NewTaskViewController.swift */; };
+		E57C44312833CF9B00CEE439 /* NewTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57C44302833CF9B00CEE439 /* NewTaskViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		E556507528329D27005229F1 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		E556507E2832B429005229F1 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		E5565080283344B0005229F1 /* MainTableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableFooterView.swift; sourceTree = "<group>"; };
+		E57C442A2833CAE400CEE439 /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
+		E57C44302833CF9B00CEE439 /* NewTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,10 +77,10 @@
 				E556505C283287CB005229F1 /* AppDelegate.swift */,
 				E556505E283287CB005229F1 /* SceneDelegate.swift */,
 				E5565082283344BE005229F1 /* Entities */,
-				E556507528329D27005229F1 /* MainViewModel.swift */,
-				E5565060283287CB005229F1 /* MainViewController.swift */,
-				E556507E2832B429005229F1 /* MainTableViewCell.swift */,
-				E5565080283344B0005229F1 /* MainTableFooterView.swift */,
+				E57C442D2833CAEC00CEE439 /* ViewModels */,
+				E57C442C2833CAE800CEE439 /* Views */,
+				E57C442E2833CAF200CEE439 /* Cells */,
+				E57C442F2833CAF600CEE439 /* SubComponents */,
 				E5565065283287CD005229F1 /* Assets.xcassets */,
 				E5565067283287CD005229F1 /* LaunchScreen.storyboard */,
 				E556506A283287CD005229F1 /* Info.plist */,
@@ -90,6 +94,40 @@
 				E556507028329257005229F1 /* Food.swift */,
 			);
 			path = Entities;
+			sourceTree = "<group>";
+		};
+		E57C442C2833CAE800CEE439 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E5565060283287CB005229F1 /* MainViewController.swift */,
+				E57C442A2833CAE400CEE439 /* NewTaskViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E57C442D2833CAEC00CEE439 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				E556507528329D27005229F1 /* MainViewModel.swift */,
+				E57C44302833CF9B00CEE439 /* NewTaskViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		E57C442E2833CAF200CEE439 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E556507E2832B429005229F1 /* MainTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		E57C442F2833CAF600CEE439 /* SubComponents */ = {
+			isa = PBXGroup;
+			children = (
+				E5565080283344B0005229F1 /* MainTableFooterView.swift */,
+			);
+			path = SubComponents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,7 +216,9 @@
 				E556507128329257005229F1 /* Food.swift in Sources */,
 				E556507F2832B429005229F1 /* MainTableViewCell.swift in Sources */,
 				E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */,
+				E57C442B2833CAE400CEE439 /* NewTaskViewController.swift in Sources */,
 				E556505F283287CB005229F1 /* SceneDelegate.swift in Sources */,
+				E57C44312833CF9B00CEE439 /* NewTaskViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,8 +9,9 @@ import UIKit
 import SnapKit
 
 class MainTableFooterView: UITableViewHeaderFooterView {
+    var presentNewTaskVC: () -> Void = {}
     
-    var addButton: UIButton = {
+    lazy var addButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.image = UIImage(systemName: "plus")
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 20)
@@ -18,6 +19,7 @@ class MainTableFooterView: UITableViewHeaderFooterView {
         config.baseForegroundColor = .black
         
         let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
         
         return button
     }()
@@ -34,5 +36,11 @@ class MainTableFooterView: UITableViewHeaderFooterView {
         addButton.snp.makeConstraints { make in
             make.centerY.centerX.equalToSuperview()
         }
+    }
+}
+
+extension MainTableFooterView {
+    @objc func didTapAddButton() {
+        presentNewTaskVC()
     }
 }
