@@ -12,22 +12,24 @@ import RxCocoa
 
 class MainTableViewCell: UITableViewCell {
     static let identifier = "MainTableViewCell"
-    
     let disposeBag = DisposeBag()
+    var deleteFood: () -> Void = {}
+    var setTimer: () -> Void = {}
     
-    var playButton: UIButton = {
+    lazy var playButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.image = UIImage(systemName: "play.circle")
         config.baseForegroundColor = .label
         config.baseBackgroundColor = .clear
-        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
+        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
         
         let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapPlayButton), for: .touchUpInside)
         
         return button
     }()
     
-    var deleteButton: UIButton = {
+    lazy var deleteButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.image = UIImage(systemName: "trash")
         config.baseForegroundColor = .label
@@ -35,6 +37,7 @@ class MainTableViewCell: UITableViewCell {
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 20)
         
         let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
         
         return button
     }()
@@ -60,7 +63,7 @@ class MainTableViewCell: UITableViewCell {
         bind()
     }
     
-    func setData(_ something: Something) {
+    func setData(_ something: Food) {
         nameLabel.text = something.name
         timeLabel.text = "\(something.time)"
     }
@@ -94,5 +97,15 @@ class MainTableViewCell: UITableViewCell {
     
     func bind() {
         
+    }
+}
+
+extension MainTableViewCell {
+    @objc func didTapDeleteButton() {
+        deleteFood()
+    }
+    
+    @objc func didTapPlayButton() {
+        setTimer()
     }
 }

@@ -12,7 +12,7 @@
 		E5565061283287CB005229F1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5565060283287CB005229F1 /* MainViewController.swift */; };
 		E5565066283287CD005229F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5565065283287CD005229F1 /* Assets.xcassets */; };
 		E5565069283287CD005229F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5565067283287CD005229F1 /* LaunchScreen.storyboard */; };
-		E556507128329257005229F1 /* Something.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556507028329257005229F1 /* Something.swift */; };
+		E556507128329257005229F1 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556507028329257005229F1 /* Food.swift */; };
 		E5565074283292DD005229F1 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E5565073283292DD005229F1 /* SnapKit */; };
 		E556507628329D27005229F1 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556507528329D27005229F1 /* MainViewModel.swift */; };
 		E55650792832B38C005229F1 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E55650782832B38C005229F1 /* RxCocoa */; };
@@ -30,7 +30,7 @@
 		E5565065283287CD005229F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E5565068283287CD005229F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E556506A283287CD005229F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E556507028329257005229F1 /* Something.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Something.swift; sourceTree = "<group>"; };
+		E556507028329257005229F1 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		E556507528329D27005229F1 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		E556507E2832B429005229F1 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		E5565080283344B0005229F1 /* MainTableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableFooterView.swift; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 		E5565082283344BE005229F1 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				E556507028329257005229F1 /* Something.swift */,
+				E556507028329257005229F1 /* Food.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -175,7 +175,7 @@
 				E556507628329D27005229F1 /* MainViewModel.swift in Sources */,
 				E5565061283287CB005229F1 /* MainViewController.swift in Sources */,
 				E556505D283287CB005229F1 /* AppDelegate.swift in Sources */,
-				E556507128329257005229F1 /* Something.swift in Sources */,
+				E556507128329257005229F1 /* Food.swift in Sources */,
 				E556507F2832B429005229F1 /* MainTableViewCell.swift in Sources */,
 				E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */,
 				E556505F283287CB005229F1 /* SceneDelegate.swift in Sources */,

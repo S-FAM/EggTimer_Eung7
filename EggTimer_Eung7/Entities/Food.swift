@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Something {
+struct Food {
     let name: String
     let time: Int
 }

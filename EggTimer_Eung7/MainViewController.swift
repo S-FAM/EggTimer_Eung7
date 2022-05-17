@@ -9,16 +9,18 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import SystemConfiguration
 
 class MainViewController: UIViewController {
     let viewModel = MainViewModel()
+    
     let disposeBag = DisposeBag()
     
     var timeLabel: UILabel = {
         let label = UILabel()
         label.text = "07:00"
         label.font = .systemFont(ofSize: 100, weight: .bold)
-        
+       
         return label
     }()
     
@@ -57,7 +59,7 @@ class MainViewController: UIViewController {
         tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
         tableView.rowHeight = 80
         tableView.separatorStyle = .singleLine
-        tableView.separatorColor = .white
+        tableView.separatorColor = .black
         tableView.tableFooterView = MainTableFooterView(frame: CGRect(
             origin: CGPoint(x: 0, y: 0),
             size: CGSize(width: UIScreen.main.bounds.width, height: 80.0))
@@ -112,24 +114,22 @@ class MainViewController: UIViewController {
     }
     
     func bind() {
-        viewModel.eggs
+        viewModel.foods
             .bind(to: tableView.rx.items(
                 cellIdentifier: MainTableViewCell.identifier,
                 cellType: MainTableViewCell.self
-            )) { row, something, cell in
-                cell.setData(something)
+            )) { row, food, cell in
+                cell.setData(food)
                 
-                cell.playButton.rx.tap
-                    .subscribe(onNext: {
-                        print("PlayButtonTapped!")
-                    })
-                    .disposed(by: self.disposeBag)
+                cell.setTimer = { [weak self] in
+                    guard let self = self else { return }
+                    self.timeLabel.text = "\(food.time)"
+                }
                 
-                cell.deleteButton.rx.tap
-                    .subscribe(onNext: {
-                        print("DeleteButtonTapped!")
-                    })
-                    .disposed(by: self.disposeBag)
+                cell.deleteFood = { [weak self] in
+                    guard let self = self else { return }
+                    self.viewModel.deleteFromFoods(row)
+                }
             }
             .disposed(by: disposeBag)
     }
