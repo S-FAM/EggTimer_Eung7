@@ -11,7 +11,7 @@ import RxCocoa
 class MainViewModel {
     let disposeBag = DisposeBag()
     
-    let foods = BehaviorRelay<[Food]>(value: [
+    var foods = BehaviorRelay<[Food]>(value: [
         Food(name: "Runny yolk eggs", seconds: 240),
         Food(name: "Moist yolk eggs", seconds: 360),
         Food(name: "Well-done eggs", seconds: 240),
@@ -32,8 +32,21 @@ class MainViewModel {
         timeString += String(format: "%02d", seconds)
         return timeString
     }
-
+    
     func secondsToMinutesSeconds(_ seconds: Int) -> (Int, Int) {
         return (seconds / 60, seconds % 60)
+    }
+    
+    func minutesSecondsToSeconds(_ minute: Int, _ seconds: Int) -> Int {
+        return (minute * 60) + seconds
+    }
+    
+    func createFood(_ name: String, minutes: Int, seconds: Int) -> Food {
+        let seconds = minutesSecondsToSeconds(minutes, seconds)
+        return Food(name: name, seconds: seconds)
+    }
+    
+    func didTapResetButton() {
+        
     }
 }

@@ -68,7 +68,7 @@ class MainTableViewCell: UITableViewCell {
     }
     
     func setupUI() {
-        contentView.backgroundColor = .systemYellow
+        contentView.backgroundColor = .systemFill
         
         [ playButton, timeLabel, nameLabel, deleteButton ]
             .forEach { contentView.addSubview($0) }

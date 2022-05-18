@@ -18,8 +18,4 @@ class NewTaskViewModel {
     var listToString: [String] {
         return list.map { String($0) }
     }
-    
-    func minutesSecondsToSeconds(_ minute: Int, _ seconds: Int) -> Int {
-        return (minute * 60) + seconds
-    }
 }

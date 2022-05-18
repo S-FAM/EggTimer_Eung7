@@ -14,8 +14,9 @@ import PanModal
 class MainViewController: UIViewController {
     let viewModel = MainViewModel()
     let disposeBag = DisposeBag()
-    var timeCount: Int = 0
+    var currentFood: Food?
     var timer = Timer()
+    var remainingTime: Int = 0
     var timerCounting: Bool = false
     
     var timeLabel: UILabel = {
@@ -70,13 +71,22 @@ class MainViewController: UIViewController {
             guard let self = self else { return }
             let vc = NewTaskViewController()
             self.presentPanModal(vc)
+            
+            vc.confirmButtonCompletion = { [weak self] name, minutes, seconds in
+                guard let self = self else { return }
+                let food = self.viewModel.createFood(name, minutes: minutes, seconds: seconds)
+                
+                var foods = self.viewModel.foods.value
+                foods.append(food)
+                self.viewModel.foods.accept(foods)
+            }
         }
         return footerView
     }()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .systemYellow
+        tableView.backgroundColor = .systemTeal
         tableView.register(MainTableViewCell.self,
                            forCellReuseIdentifier: MainTableViewCell.identifier)
         tableView.rowHeight = 80
@@ -100,7 +110,7 @@ class MainViewController: UIViewController {
     }
     
     func updateUI() {
-        view.backgroundColor = .systemYellow
+        view.backgroundColor = .systemTeal
         title = "What do you up to?"
         
         [ timeLabel, resetButton, startPauseButton, bottomLineView, tableView ]
@@ -153,7 +163,9 @@ class MainViewController: UIViewController {
                     self.startPauseButton.isSelected = false
                     self.timerCounting = false
                     self.timer.invalidate()
-                    self.timeCount = food.seconds
+                 
+                    self.currentFood = food
+                    self.remainingTime = food.seconds
                     self.timeLabel.text = string
                     self.updateNavigationTitle(food)
                 }
@@ -165,13 +177,20 @@ class MainViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
-    
 }
 
 // MARK: @objc methods
 extension MainViewController {
     @objc func didTapResetButton(_ sender: UIButton) {
+        guard let currentFood = currentFood else { return }
+        remainingTime = currentFood.seconds
+        let time = viewModel.secondsToMinutesSeconds(currentFood.seconds)
         
+        let stringTime = viewModel.stringFromTime(time.0, time.1)
+        startPauseButton.isSelected = false
+        timerCounting = false
+        timer.invalidate()
+        timeLabel.text = stringTime
     }
     
     @objc func didTapStartPauseButton(_ sender: UIButton) {
@@ -188,12 +207,15 @@ extension MainViewController {
                                          repeats: true)
         }
     }
-    
+
     @objc func timerObserver() {
-        timeCount -= 1
-        let time = viewModel.secondsToMinutesSeconds(timeCount)
-        let timeString = viewModel.stringFromTime(time.0, time.1)
-        print(timeString)
-        timeLabel.text = timeString
+        if remainingTime > 0 {
+            remainingTime -= 1
+            let time = viewModel.secondsToMinutesSeconds(remainingTime)
+            let timeString = viewModel.stringFromTime(time.0, time.1)
+            timeLabel.text = timeString
+        }
     }
 }
+
+// MARK: Utilities

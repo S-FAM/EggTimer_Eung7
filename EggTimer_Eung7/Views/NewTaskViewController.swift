@@ -14,6 +14,9 @@ import PanModal
 class NewTaskViewController: UIViewController {
     let viewModel = NewTaskViewModel()
     let disposeBag = DisposeBag()
+    var minutes: Int?
+    var seconds: Int?
+    var confirmButtonCompletion: ((String, Int, Int) -> Void)?
     
     lazy var confirmButton: UIButton = {
         var config = UIButton.Configuration.filled()
@@ -55,10 +58,11 @@ class NewTaskViewController: UIViewController {
         return label
     }()
     
-    var taskTextField: UITextField = {
+    lazy var taskTextField: UITextField = {
         let textField = UITextField()
         textField.text = "Type here"
-        textField.textColor = .tertiarySystemGroupedBackground
+        textField.textColor = .secondaryLabel
+        textField.delegate = self
         
         return textField
     }()
@@ -124,14 +128,10 @@ class NewTaskViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-        bind()
     }
-    
-    func bind() {
-    }
-    
+
     func setupUI() {
-        view.backgroundColor = .systemCyan
+        view.backgroundColor = .systemGray
         
         [ minutePickerView, minutesLabel, secondsPickerView, secondsLabel ]
             .forEach { horizontalStackView.addArrangedSubview($0) }
@@ -180,7 +180,7 @@ class NewTaskViewController: UIViewController {
         }
         
         timeLabel.snp.makeConstraints { make in
-            make.top.equalTo(taskTextField.snp.bottom).offset(16)
+            make.top.equalTo(taskTextField.snp.bottom).offset(32)
             make.leading.equalToSuperview().inset(16)
         }
         
@@ -199,7 +199,23 @@ extension NewTaskViewController {
     }
     
     @objc func didTapConfirmButton(_ sender: UIButton) {
-        
+        guard let text = taskTextField.text,
+              let minutes = minutes,
+              let seconds = seconds else { return }
+        confirmButtonCompletion?(text, minutes, seconds)
+        dismiss(animated: true)
+    }
+}
+
+// MARK: TextField Delegate
+extension NewTaskViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.text = ""
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        return true
     }
 }
 
@@ -216,6 +232,14 @@ extension NewTaskViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return viewModel.listToString[row]
     }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView == minutePickerView {
+            minutes = viewModel.list[row]
+        } else if pickerView == secondsPickerView {
+            seconds = viewModel.list[row]
+        }
+    }
 }
 
 // MARK: PanModal Controller
@@ -225,10 +249,10 @@ extension NewTaskViewController: PanModalPresentable {
     }
     
     var shortFormHeight: PanModalHeight {
-        return .contentHeight(300)
+        return .contentHeight(460)
     }
     
     var longFormHeight: PanModalHeight {
-        return .contentHeight(300)
+        return .contentHeight(460)
     }
 }
