@@ -14,6 +14,7 @@ import PanModal
 class MainViewController: UIViewController {
     let viewModel = MainViewModel()
     let disposeBag = DisposeBag()
+    var timeCount: Int = 0
     var timer = Timer()
     var timerCounting: Bool = false
     
@@ -32,6 +33,7 @@ class MainViewController: UIViewController {
         config.baseForegroundColor = .systemBackground
         
         let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapResetButton(_:)), for: .touchUpInside)
         
         return button
     }()
@@ -45,6 +47,7 @@ class MainViewController: UIViewController {
         
         let button = UIButton(configuration: config)
         button.setTitle("Start", for: .normal)
+        button.setTitle("Pause", for: .selected)
         button.addTarget(self, action: #selector(didTapStartPauseButton(_:)), for: .touchUpInside)
         
         return button
@@ -145,11 +148,17 @@ class MainViewController: UIViewController {
                 let string = self.viewModel.stringFromTime(time.0, time.1)
                 cell.setData(food, string)
                 
+                // playButton이 선택
                 cell.setTimer = {
+                    self.startPauseButton.isSelected = false
+                    self.timerCounting = false
+                    self.timer.invalidate()
+                    self.timeCount = food.seconds
                     self.timeLabel.text = string
                     self.updateNavigationTitle(food)
                 }
                 
+                // deleteButton이 선택
                 cell.deleteFood = {
                     self.viewModel.deleteFromFoods(row)
                 }
@@ -161,14 +170,17 @@ class MainViewController: UIViewController {
 
 // MARK: @objc methods
 extension MainViewController {
+    @objc func didTapResetButton(_ sender: UIButton) {
+        
+    }
+    
     @objc func didTapStartPauseButton(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
         if timerCounting {
             timerCounting = false
             timer.invalidate()
-            
         } else {
             timerCounting = true
-            startPauseButton.setTitle("Pause", for: .normal)
             timer = Timer.scheduledTimer(timeInterval: 1,
                                          target: self,
                                          selector: #selector(timerObserver),
@@ -178,6 +190,10 @@ extension MainViewController {
     }
     
     @objc func timerObserver() {
-        
+        timeCount -= 1
+        let time = viewModel.secondsToMinutesSeconds(timeCount)
+        let timeString = viewModel.stringFromTime(time.0, time.1)
+        print(timeString)
+        timeLabel.text = timeString
     }
 }

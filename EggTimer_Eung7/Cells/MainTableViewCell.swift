@@ -21,7 +21,7 @@ class MainTableViewCell: UITableViewCell {
         config.image = UIImage(systemName: "play.circle")
         config.baseForegroundColor = .label
         config.baseBackgroundColor = .clear
-        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
+        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 24)
         
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapPlayButton), for: .touchUpInside)
@@ -44,7 +44,7 @@ class MainTableViewCell: UITableViewCell {
     
     var timeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18.0, weight: .heavy)
+        label.font = .systemFont(ofSize: 18.0, weight: .light)
         
         return label
     }()

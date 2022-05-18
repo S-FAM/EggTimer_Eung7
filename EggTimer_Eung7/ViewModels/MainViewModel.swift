@@ -32,9 +32,8 @@ class MainViewModel {
         timeString += String(format: "%02d", seconds)
         return timeString
     }
-    
+
     func secondsToMinutesSeconds(_ seconds: Int) -> (Int, Int) {
         return (seconds / 60, seconds % 60)
     }
-    
 }
