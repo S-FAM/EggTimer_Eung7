@@ -15,24 +15,26 @@ class NewTaskViewController: UIViewController {
     let viewModel = NewTaskViewModel()
     let disposeBag = DisposeBag()
     
-    var confirmButton: UIButton = {
+    lazy var confirmButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.title = "Confirm"
         config.attributedTitle?.font = .systemFont(ofSize: 18.0, weight: .medium)
         config.baseBackgroundColor = .clear
         
         let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapConfirmButton(_:)), for: .touchUpInside)
         
         return button
     }()
 
-    var cancelButton: UIButton = {
+    lazy var cancelButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.title = "Cancel"
         config.baseBackgroundColor = .clear
         config.attributedTitle?.font = .systemFont(ofSize: 18.0, weight: .medium)
         
         let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapCancelButton(_:)), for: .touchUpInside)
         
         return button
     }()
@@ -190,6 +192,18 @@ class NewTaskViewController: UIViewController {
     }
 }
 
+// MARK: @objc methods
+extension NewTaskViewController {
+    @objc func didTapCancelButton(_ sender: UIButton) {
+        dismiss(animated: true)
+    }
+    
+    @objc func didTapConfirmButton(_ sender: UIButton) {
+        
+    }
+}
+
+// MARK: PickerView Controller
 extension NewTaskViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -204,6 +218,7 @@ extension NewTaskViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
 }
 
+// MARK: PanModal Controller
 extension NewTaskViewController: PanModalPresentable {
     var panScrollable: UIScrollView? {
         return nil

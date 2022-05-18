@@ -50,6 +50,7 @@ class MainTableViewCell: UITableViewCell {
     
     var nameLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 18.0, weight: .bold)
         
         return label
     }()
@@ -60,9 +61,9 @@ class MainTableViewCell: UITableViewCell {
         setupUI()
     }
     
-    func setData(_ something: Food) {
-        nameLabel.text = something.name
-        timeLabel.text = "\(something.time)"
+    func setData(_ food: Food) {
+        nameLabel.text = food.name
+        timeLabel.text = "\(food.seconds)"
     }
     
     func setupUI() {

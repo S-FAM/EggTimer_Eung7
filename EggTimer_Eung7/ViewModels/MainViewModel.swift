@@ -12,12 +12,11 @@ class MainViewModel {
     let disposeBag = DisposeBag()
     
     let foods = BehaviorRelay<[Food]>(value: [
-        Food(name: "Runny yolk eggs", time: 4),
-        Food(name: "Moist yolk eggs", time: 6),
-        Food(name: "Well-done eggs", time: 8),
-        Food(name: "Plank", time: 3),
-        Food(name: "Cooking Instant Noodle", time: 3),
-        Food(name: "Homemade Pizza", time: 7)
+        Food(name: "Runny yolk eggs", seconds: 240),
+        Food(name: "Moist yolk eggs", seconds: 360),
+        Food(name: "Well-done eggs", seconds: 240),
+        Food(name: "Plank", seconds: 180),
+        Food(name: "Cooking Instant Noodle", seconds: 180)
     ])
     
     func deleteFromFoods(_ index: Int) {
@@ -25,4 +24,17 @@ class MainViewModel {
         foods.remove(at: index)
         self.foods.accept(foods)
     }
+    
+    func stringFromTime(_ minute: Int, _ seconds: Int) -> String {
+        var timeString = ""
+        timeString += String(format: "%02d", minute)
+        timeString += " : "
+        timeString += String(format: "%02d", seconds)
+        return timeString
+    }
+    
+    func secondsToMinutesSeconds(_ seconds: Int) -> (Int, Int) {
+        return (seconds / 60, seconds % 60)
+    }
+    
 }

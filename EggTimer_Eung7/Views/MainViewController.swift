@@ -14,16 +14,18 @@ import PanModal
 class MainViewController: UIViewController {
     let viewModel = MainViewModel()
     let disposeBag = DisposeBag()
+    var timer = Timer()
+    var timerCounting: Bool = false
     
     var timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "07:00"
+        label.text = "00:00"
         label.font = .systemFont(ofSize: 100, weight: .bold)
         
         return label
     }()
     
-    var resetButton: UIButton = {
+    lazy var resetButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.title = "Reset"
         config.baseBackgroundColor = .black
@@ -34,13 +36,16 @@ class MainViewController: UIViewController {
         return button
     }()
     
-    var startButton: UIButton = {
+    lazy var startPauseButton: UIButton = {
         var config = UIButton.Configuration.filled()
-        config.title = "Start"
-        config.baseBackgroundColor = .black
+        config.baseBackgroundColor = .systemPink
         config.baseForegroundColor = .systemBackground
+        config.titleAlignment = .center
+        config.cornerStyle = .large
         
         let button = UIButton(configuration: config)
+        button.setTitle("Start", for: .normal)
+        button.addTarget(self, action: #selector(didTapStartPauseButton(_:)), for: .touchUpInside)
         
         return button
     }()
@@ -57,20 +62,20 @@ class MainViewController: UIViewController {
             origin: CGPoint(x: 0, y: 0),
             size: CGSize(width: UIScreen.main.bounds.width, height: 80.0))
         )
+        // MARK: PlusButtonTap Logic
         footerView.presentNewTaskVC = { [weak self] in
             guard let self = self else { return }
             let vc = NewTaskViewController()
-            
             self.presentPanModal(vc)
         }
-        
         return footerView
     }()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemYellow
-        tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
+        tableView.register(MainTableViewCell.self,
+                           forCellReuseIdentifier: MainTableViewCell.identifier)
         tableView.rowHeight = 80
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .black
@@ -93,27 +98,31 @@ class MainViewController: UIViewController {
     
     func updateUI() {
         view.backgroundColor = .systemYellow
+        title = "What do you up to?"
         
-        [ timeLabel, resetButton, startButton, bottomLineView, tableView ]
+        [ timeLabel, resetButton, startPauseButton, bottomLineView, tableView ]
             .forEach { view.addSubview($0) }
         
         timeLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.leading.trailing.equalToSuperview().inset(64)
         }
         
         resetButton.snp.makeConstraints { make in
             make.top.equalTo(timeLabel.snp.bottom).offset(32)
             make.leading.equalToSuperview().inset(32)
+            make.width.equalTo(80)
         }
         
-        startButton.snp.makeConstraints { make in
+        startPauseButton.snp.makeConstraints { make in
             make.top.equalTo(timeLabel.snp.bottom).offset(32)
             make.trailing.equalToSuperview().inset(32)
+            make.width.equalTo(80)
         }
         
         bottomLineView.snp.makeConstraints { make in
-            make.top.equalTo(startButton.snp.bottom).offset(32)
+            make.top.equalTo(startPauseButton.snp.bottom).offset(32)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(1)
         }
@@ -125,6 +134,7 @@ class MainViewController: UIViewController {
     }
     
     func bind() {
+        // TableView 설정
         viewModel.foods
             .bind(to: tableView.rx.items(
                 cellIdentifier: MainTableViewCell.identifier,
@@ -134,7 +144,7 @@ class MainViewController: UIViewController {
                 
                 cell.setTimer = { [weak self] in
                     guard let self = self else { return }
-                    self.timeLabel.text = "\(food.time)"
+                    self.timeLabel.text = "\(food.seconds)"
                     self.updateNavigationTitle(food)
                 }
                 
@@ -144,5 +154,29 @@ class MainViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+    }
+    
+}
+
+// MARK: @objc methods
+extension MainViewController {
+    @objc func didTapStartPauseButton(_ sender: UIButton) {
+        if timerCounting {
+            timerCounting = false
+            timer.invalidate()
+            
+        } else {
+            timerCounting = true
+            startPauseButton.setTitle("Pause", for: .normal)
+            timer = Timer.scheduledTimer(timeInterval: 1,
+                                         target: self,
+                                         selector: #selector(timerObserver),
+                                         userInfo: nil,
+                                         repeats: true)
+        }
+    }
+    
+    @objc func timerObserver() {
+        
     }
 }

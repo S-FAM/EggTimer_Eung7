@@ -9,5 +9,5 @@ import Foundation
 
 struct Food {
     let name: String
-    let time: Int
+    let seconds: Int
 }
