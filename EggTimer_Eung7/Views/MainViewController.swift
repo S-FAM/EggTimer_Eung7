@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import PanModal
 
 class MainViewController: UIViewController {
     let viewModel = MainViewModel()
@@ -46,7 +47,7 @@ class MainViewController: UIViewController {
     
     var bottomLineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .label
         
         return view
     }()
@@ -60,6 +61,7 @@ class MainViewController: UIViewController {
             guard let self = self else { return }
             let vc = NewTaskViewController()
             
+            self.presentPanModal(vc)
         }
         
         return footerView

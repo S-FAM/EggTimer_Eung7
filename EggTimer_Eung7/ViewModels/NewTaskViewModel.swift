@@ -5,8 +5,17 @@
 //  Created by 김응철 on 2022/05/17.
 //
 
-import Foundation
+import RxSwift
+import RxCocoa
 
 class NewTaskViewModel {
-    let List = Array<Int>(0...59)
+    let list = Array<Int>(0...59)
+    
+    var pickerViewNumberOfRows: Int {
+        return list.count
+    }
+    
+    var listToString: [String] {
+        return list.map { String($0) }
+    }
 }

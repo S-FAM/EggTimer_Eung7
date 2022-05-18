@@ -22,6 +22,7 @@
 		E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5565080283344B0005229F1 /* MainTableFooterView.swift */; };
 		E57C442B2833CAE400CEE439 /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57C442A2833CAE400CEE439 /* NewTaskViewController.swift */; };
 		E57C44312833CF9B00CEE439 /* NewTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57C44302833CF9B00CEE439 /* NewTaskViewModel.swift */; };
+		E57C44362833EB6600CEE439 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = E57C44352833EB6600CEE439 /* PanModal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 				E55650792832B38C005229F1 /* RxCocoa in Frameworks */,
 				E556507D2832B38C005229F1 /* RxSwift in Frameworks */,
 				E5565074283292DD005229F1 /* SnapKit in Frameworks */,
+				E57C44362833EB6600CEE439 /* PanModal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +153,7 @@
 				E55650782832B38C005229F1 /* RxCocoa */,
 				E556507A2832B38C005229F1 /* RxRelay */,
 				E556507C2832B38C005229F1 /* RxSwift */,
+				E57C44352833EB6600CEE439 /* PanModal */,
 			);
 			productName = EggTimer_Eung7;
 			productReference = E5565059283287CB005229F1 /* EggTimer_Eung7.app */;
@@ -183,6 +186,7 @@
 			packageReferences = (
 				E5565072283292DD005229F1 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				E55650772832B38C005229F1 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				E57C44342833EB6600CEE439 /* XCRemoteSwiftPackageReference "PanModal" */,
 			);
 			productRefGroup = E556505A283287CB005229F1 /* Products */;
 			projectDirPath = "";
@@ -444,6 +448,14 @@
 				minimumVersion = 6.0.0;
 			};
 		};
+		E57C44342833EB6600CEE439 /* XCRemoteSwiftPackageReference "PanModal" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/slackhq/PanModal.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -466,6 +478,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E55650772832B38C005229F1 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		E57C44352833EB6600CEE439 /* PanModal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E57C44342833EB6600CEE439 /* XCRemoteSwiftPackageReference "PanModal" */;
+			productName = PanModal;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
