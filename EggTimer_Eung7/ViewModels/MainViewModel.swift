@@ -5,24 +5,31 @@
 //  Created by 김응철 on 2022/05/16.
 //
 
-import RxSwift
-import RxCocoa
-
 class MainViewModel {
-    let disposeBag = DisposeBag()
-    
-    var foods = BehaviorRelay<[Food]>(value: [
+    var reloadCompletion: () -> Void = {}
+    var foods: [Food] = [
         Food(name: "Runny yolk eggs", seconds: 240),
         Food(name: "Moist yolk eggs", seconds: 360),
         Food(name: "Well-done eggs", seconds: 240),
         Food(name: "Plank", seconds: 180),
         Food(name: "Cooking Instant Noodle", seconds: 180)
-    ])
+    ] {
+        didSet {
+            reloadCompletion()
+        }
+    }
+
+    func createFood(_ name: String, minutes: Int, seconds: Int) -> Food {
+        let seconds = minutesSecondsToSeconds(minutes, seconds)
+        return Food(name: name, seconds: seconds)
+    }
     
-    func deleteFromFoods(_ index: Int) {
-        var foods = foods.value
+    func removeFood(_ index: Int) {
         foods.remove(at: index)
-        self.foods.accept(foods)
+    }
+    
+    func addFood(_ food: Food) {
+        foods.append(food)
     }
     
     func stringFromTime(_ minute: Int, _ seconds: Int) -> String {
@@ -39,14 +46,5 @@ class MainViewModel {
     
     func minutesSecondsToSeconds(_ minute: Int, _ seconds: Int) -> Int {
         return (minute * 60) + seconds
-    }
-    
-    func createFood(_ name: String, minutes: Int, seconds: Int) -> Food {
-        let seconds = minutesSecondsToSeconds(minutes, seconds)
-        return Food(name: name, seconds: seconds)
-    }
-    
-    func didTapResetButton() {
-        
     }
 }

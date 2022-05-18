@@ -7,13 +7,10 @@
 
 import UIKit
 import SnapKit
-import RxSwift
-import RxCocoa
 import PanModal
 
 class MainViewController: UIViewController {
     let viewModel = MainViewModel()
-    let disposeBag = DisposeBag()
     var currentFood: Food?
     var timer = Timer()
     var remainingTime: Int = 0
@@ -75,10 +72,7 @@ class MainViewController: UIViewController {
             vc.confirmButtonCompletion = { [weak self] name, minutes, seconds in
                 guard let self = self else { return }
                 let food = self.viewModel.createFood(name, minutes: minutes, seconds: seconds)
-                
-                var foods = self.viewModel.foods.value
-                foods.append(food)
-                self.viewModel.foods.accept(foods)
+                self.viewModel.addFood(food)
             }
         }
         return footerView
@@ -94,6 +88,7 @@ class MainViewController: UIViewController {
         tableView.separatorColor = .black
         tableView.allowsSelection = false
         tableView.tableFooterView = tableFooterView
+        tableView.dataSource = self
         
         return tableView
     }()
@@ -102,7 +97,11 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         updateUI()
-        bind()
+        // Data가
+        viewModel.reloadCompletion = { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }
     }
     
     func updateNavigationTitle(_ food: Food) {
@@ -145,37 +144,41 @@ class MainViewController: UIViewController {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
+}
+
+// MARK: TableViewDataSource
+extension MainViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.foods.count
+    }
     
-    func bind() {
-        // TableView 설정
-        viewModel.foods
-            .bind(to: tableView.rx.items(
-                cellIdentifier: MainTableViewCell.identifier,
-                cellType: MainTableViewCell.self
-            )) { [weak self] row, food, cell in
-                guard let self = self else { return }
-                let time = self.viewModel.secondsToMinutesSeconds(food.seconds)
-                let string = self.viewModel.stringFromTime(time.0, time.1)
-                cell.setData(food, string)
-                
-                // playButton이 선택
-                cell.setTimer = {
-                    self.startPauseButton.isSelected = false
-                    self.timerCounting = false
-                    self.timer.invalidate()
-                 
-                    self.currentFood = food
-                    self.remainingTime = food.seconds
-                    self.timeLabel.text = string
-                    self.updateNavigationTitle(food)
-                }
-                
-                // deleteButton이 선택
-                cell.deleteFood = {
-                    self.viewModel.deleteFromFoods(row)
-                }
-            }
-            .disposed(by: disposeBag)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: MainTableViewCell.identifier,
+            for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
+        let food = viewModel.foods[indexPath.row]
+        let time = self.viewModel.secondsToMinutesSeconds(food.seconds)
+        let string = self.viewModel.stringFromTime(time.0, time.1)
+        cell.setData(food, string)
+        
+        // playButton 선택
+        cell.setTimer = {
+            self.startPauseButton.isSelected = false
+            self.timerCounting = false
+            self.timer.invalidate()
+            
+            self.currentFood = food
+            self.remainingTime = food.seconds
+            self.timeLabel.text = string
+            self.updateNavigationTitle(food)
+        }
+        
+        // deleteButton 선택
+        cell.deleteFood = { [weak self] in
+            guard let self = self else { return }
+            self.viewModel.removeFood(indexPath.row)
+        }
+        return cell
     }
 }
 
@@ -217,5 +220,3 @@ extension MainViewController {
         }
     }
 }
-
-// MARK: Utilities
