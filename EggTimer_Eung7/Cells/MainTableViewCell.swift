@@ -34,7 +34,7 @@ class MainTableViewCell: UITableViewCell {
         config.image = UIImage(systemName: "trash")
         config.baseForegroundColor = .label
         config.baseBackgroundColor = .clear
-        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 20)
+        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 14)
         
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
@@ -44,13 +44,14 @@ class MainTableViewCell: UITableViewCell {
     
     var timeLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 18.0, weight: .heavy)
         
         return label
     }()
     
     var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18.0, weight: .bold)
+        label.font = .systemFont(ofSize: 18.0, weight: .light)
         
         return label
     }()
@@ -61,9 +62,9 @@ class MainTableViewCell: UITableViewCell {
         setupUI()
     }
     
-    func setData(_ food: Food) {
+    func setData(_ food: Food, _ timeString: String) {
         nameLabel.text = food.name
-        timeLabel.text = "\(food.seconds)"
+        timeLabel.text = timeString
     }
     
     func setupUI() {
@@ -73,7 +74,7 @@ class MainTableViewCell: UITableViewCell {
             .forEach { contentView.addSubview($0) }
         
         deleteButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(16)
+            make.leading.equalToSuperview().inset(8)
             make.centerY.equalToSuperview()
         }
         
@@ -89,7 +90,7 @@ class MainTableViewCell: UITableViewCell {
         
         nameLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(deleteButton.snp.trailing).offset(8)
+            make.leading.equalTo(deleteButton.snp.trailing).offset(4)
         }
     }
 }

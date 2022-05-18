@@ -28,7 +28,7 @@ class MainViewModel {
     func stringFromTime(_ minute: Int, _ seconds: Int) -> String {
         var timeString = ""
         timeString += String(format: "%02d", minute)
-        timeString += " : "
+        timeString += ":"
         timeString += String(format: "%02d", seconds)
         return timeString
     }

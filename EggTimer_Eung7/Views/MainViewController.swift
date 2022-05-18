@@ -139,17 +139,18 @@ class MainViewController: UIViewController {
             .bind(to: tableView.rx.items(
                 cellIdentifier: MainTableViewCell.identifier,
                 cellType: MainTableViewCell.self
-            )) { row, food, cell in
-                cell.setData(food)
+            )) { [weak self] row, food, cell in
+                guard let self = self else { return }
+                let time = self.viewModel.secondsToMinutesSeconds(food.seconds)
+                let string = self.viewModel.stringFromTime(time.0, time.1)
+                cell.setData(food, string)
                 
-                cell.setTimer = { [weak self] in
-                    guard let self = self else { return }
-                    self.timeLabel.text = "\(food.seconds)"
+                cell.setTimer = {
+                    self.timeLabel.text = string
                     self.updateNavigationTitle(food)
                 }
                 
-                cell.deleteFood = { [weak self] in
-                    guard let self = self else { return }
+                cell.deleteFood = {
                     self.viewModel.deleteFromFoods(row)
                 }
             }
