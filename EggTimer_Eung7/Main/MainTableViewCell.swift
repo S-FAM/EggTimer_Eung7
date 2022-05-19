@@ -7,12 +7,9 @@
 
 import UIKit
 import SnapKit
-import RxSwift
-import RxCocoa
 
 class MainTableViewCell: UITableViewCell {
     static let identifier = "MainTableViewCell"
-    let disposeBag = DisposeBag()
     var deleteFood: () -> Void = {}
     var setTimer: () -> Void = {}
     
@@ -51,6 +48,7 @@ class MainTableViewCell: UITableViewCell {
     
     var nameLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
         label.font = .systemFont(ofSize: 18.0, weight: .light)
         
         return label
@@ -76,21 +74,25 @@ class MainTableViewCell: UITableViewCell {
         deleteButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(8)
             make.centerY.equalToSuperview()
+            make.width.equalTo(50)
         }
         
         playButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(16)
+            make.width.equalTo(50)
         }
         
         timeLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalTo(playButton.snp.leading).offset(-8)
+            make.width.equalTo(50)
         }
         
         nameLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
             make.leading.equalTo(deleteButton.snp.trailing).offset(4)
+            make.trailing.equalTo(timeLabel.snp.leading).offset(-8)
+            make.centerY.equalToSuperview()
         }
     }
 }

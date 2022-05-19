@@ -5,9 +5,6 @@
 //  Created by 김응철 on 2022/05/17.
 //
 
-import RxSwift
-import RxCocoa
-
 class NewTaskViewModel {
     let list = Array<Int>(0...59)
     

@@ -79,9 +79,8 @@
 				E556505C283287CB005229F1 /* AppDelegate.swift */,
 				E556505E283287CB005229F1 /* SceneDelegate.swift */,
 				E5565082283344BE005229F1 /* Entities */,
-				E57C442D2833CAEC00CEE439 /* ViewModels */,
-				E57C442C2833CAE800CEE439 /* Views */,
-				E57C442E2833CAF200CEE439 /* Cells */,
+				E57C442D2833CAEC00CEE439 /* Main */,
+				E57C442C2833CAE800CEE439 /* NewTask */,
 				E57C442F2833CAF600CEE439 /* SubComponents */,
 				E5565065283287CD005229F1 /* Assets.xcassets */,
 				E5565067283287CD005229F1 /* LaunchScreen.storyboard */,
@@ -98,30 +97,23 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		E57C442C2833CAE800CEE439 /* Views */ = {
+		E57C442C2833CAE800CEE439 /* NewTask */ = {
+			isa = PBXGroup;
+			children = (
+				E57C442A2833CAE400CEE439 /* NewTaskViewController.swift */,
+				E57C44302833CF9B00CEE439 /* NewTaskViewModel.swift */,
+			);
+			path = NewTask;
+			sourceTree = "<group>";
+		};
+		E57C442D2833CAEC00CEE439 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				E5565060283287CB005229F1 /* MainViewController.swift */,
-				E57C442A2833CAE400CEE439 /* NewTaskViewController.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		E57C442D2833CAEC00CEE439 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
 				E556507528329D27005229F1 /* MainViewModel.swift */,
-				E57C44302833CF9B00CEE439 /* NewTaskViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		E57C442E2833CAF200CEE439 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
 				E556507E2832B429005229F1 /* MainTableViewCell.swift */,
 			);
-			path = Cells;
+			path = Main;
 			sourceTree = "<group>";
 		};
 		E57C442F2833CAF600CEE439 /* SubComponents */ = {

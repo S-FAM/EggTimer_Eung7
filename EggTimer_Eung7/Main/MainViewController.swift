@@ -77,13 +77,13 @@ class MainViewController: UIViewController {
         }
         return footerView
     }()
-    
+
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemTeal
         tableView.register(MainTableViewCell.self,
                            forCellReuseIdentifier: MainTableViewCell.identifier)
-        tableView.rowHeight = 80
+        tableView.estimatedRowHeight = 150
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .black
         tableView.allowsSelection = false
@@ -95,9 +95,8 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         updateUI()
-        // Data가
+        // Data가 변화되었을 때 reloadTableView
         viewModel.reloadCompletion = { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
@@ -182,13 +181,12 @@ extension MainViewController: UITableViewDataSource {
     }
 }
 
-// MARK: @objc methods
+// MARK: @objc Methods
 extension MainViewController {
     @objc func didTapResetButton(_ sender: UIButton) {
         guard let currentFood = currentFood else { return }
         remainingTime = currentFood.seconds
         let time = viewModel.secondsToMinutesSeconds(currentFood.seconds)
-        
         let stringTime = viewModel.stringFromTime(time.0, time.1)
         startPauseButton.isSelected = false
         timerCounting = false

@@ -7,15 +7,13 @@
 
 import UIKit
 import SnapKit
-import RxCocoa
-import RxSwift
 import PanModal
 
 class NewTaskViewController: UIViewController {
     let viewModel = NewTaskViewModel()
-    let disposeBag = DisposeBag()
     var minutes: Int?
     var seconds: Int?
+    var keyboardHeight: CGFloat = 300
     var confirmButtonCompletion: ((String, Int, Int) -> Void)?
     
     lazy var confirmButton: UIButton = {
@@ -23,6 +21,7 @@ class NewTaskViewController: UIViewController {
         config.title = "Confirm"
         config.attributedTitle?.font = .systemFont(ofSize: 18.0, weight: .medium)
         config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .systemCyan
         
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapConfirmButton(_:)), for: .touchUpInside)
@@ -34,6 +33,7 @@ class NewTaskViewController: UIViewController {
         var config = UIButton.Configuration.filled()
         config.title = "Cancel"
         config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .systemRed
         config.attributedTitle?.font = .systemFont(ofSize: 18.0, weight: .medium)
         
         let button = UIButton(configuration: config)
@@ -128,10 +128,30 @@ class NewTaskViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        setKeyboardObserver()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    func setKeyboardObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow(_:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyBoardWillHide(_:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     func setupUI() {
-        view.backgroundColor = .systemGray
+        view.backgroundColor = .systemBackground
         
         [ minutePickerView, minutesLabel, secondsPickerView, secondsLabel ]
             .forEach { horizontalStackView.addArrangedSubview($0) }
@@ -205,7 +225,21 @@ extension NewTaskViewController {
         confirmButtonCompletion?(text, minutes, seconds)
         dismiss(animated: true)
     }
+    
+    @objc func keyboardWillShow(_ noti: Notification) {
+        if let keyboardFrame: NSValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let height = keyboardRectangle.height
+            keyboardHeight = height
+            self.panModalTransition(to: .longForm)
+        }
+    }
+    
+    @objc func keyBoardWillHide(_ noti: Notification) {
+        self.panModalTransition(to: .shortForm)
+    }
 }
+
 
 // MARK: TextField Delegate
 extension NewTaskViewController: UITextFieldDelegate {
@@ -216,6 +250,14 @@ extension NewTaskViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
         return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+    
+        return updatedText.count <= 40
     }
 }
 
@@ -249,10 +291,10 @@ extension NewTaskViewController: PanModalPresentable {
     }
     
     var shortFormHeight: PanModalHeight {
-        return .contentHeight(460)
+        return .contentHeight(300)
     }
     
     var longFormHeight: PanModalHeight {
-        return .contentHeight(460)
+        return .contentHeight(keyboardHeight + 180)
     }
 }
