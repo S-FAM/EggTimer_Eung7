@@ -69,8 +69,7 @@ class MainViewController: UIViewController {
             let vc = NewTaskViewController()
             self.presentPanModal(vc)
             
-            vc.confirmButtonCompletion = { [weak self] name, minutes, seconds in
-                guard let self = self else { return }
+            vc.confirmButtonCompletion = { name, minutes, seconds in
                 let food = self.viewModel.createFood(name, minutes: minutes, seconds: seconds)
                 self.viewModel.addFood(food)
             }
