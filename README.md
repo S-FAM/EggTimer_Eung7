@@ -1,2 +1,8 @@
-# EggTimer_Eung7
-EggTimer_Eung7
+# 빡 iOS 스터디 #1
+
+달걀 타이머 앱 만들기 
+---
++ SnapKit
++ PanModal
++ MVVM (Point)
+
