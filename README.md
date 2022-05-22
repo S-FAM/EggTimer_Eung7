@@ -4,5 +4,5 @@
 ---
 + SnapKit
 + PanModal
-+ MVVM (Point)
++ MVVM (⭐️)
 
