@@ -11,6 +11,13 @@ import SnapKit
 class MainTableFooterView: UITableViewHeaderFooterView {
     var presentNewTaskVC: () -> Void = {}
     
+    var upperLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        
+        return view
+    }()
+    
     lazy var addButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.image = UIImage(systemName: "plus")
@@ -31,8 +38,15 @@ class MainTableFooterView: UITableViewHeaderFooterView {
     }
     
     func setupUI() {
-        addSubview(addButton)
+        [ upperLine, addButton ]
+            .forEach { contentView.addSubview($0) }
         
+        upperLine.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.trailing.leading.equalToSuperview()
+            make.height.equalTo(1)
+        }
+
         addButton.snp.makeConstraints { make in
             make.centerY.centerX.equalToSuperview()
         }

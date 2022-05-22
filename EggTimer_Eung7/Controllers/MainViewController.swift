@@ -21,25 +21,20 @@ class MainViewController: UIViewController {
     }()
     
     lazy var resetButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.title = "Reset"
-        config.baseBackgroundColor = .black
-        config.baseForegroundColor = .systemBackground
-        
-        let button = UIButton(configuration: config)
+        let button = UIButton()
+        button.backgroundColor = .systemBackground
+        button.layer.cornerRadius = 40.0
+        button.setTitle("Reset", for: .normal)
+        button.setTitleColor(UIColor.label, for: .normal)
         button.addTarget(self, action: #selector(didTapResetButton(_:)), for: .touchUpInside)
         
         return button
     }()
     
     lazy var startPauseButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = .systemPink
-        config.baseForegroundColor = .systemBackground
-        config.titleAlignment = .center
-        config.cornerStyle = .large
-        
-        let button = UIButton(configuration: config)
+        let button = UIButton()
+        button.layer.cornerRadius = 40.0
+        button.backgroundColor = .systemOrange
         button.setTitle("Start", for: .normal)
         button.setTitle("Pause", for: .selected)
         button.addTarget(self, action: #selector(didTapStartPauseButton(_:)), for: .touchUpInside)
@@ -76,12 +71,11 @@ class MainViewController: UIViewController {
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .systemTeal
+        tableView.backgroundColor = .systemYellow
         tableView.register(MainTableViewCell.self,
                            forCellReuseIdentifier: MainTableViewCell.identifier)
-        tableView.rowHeight = 80
+        tableView.estimatedRowHeight = 80
         tableView.separatorStyle = .singleLine
-        tableView.separatorColor = .black
         tableView.allowsSelection = false
         tableView.tableFooterView = tableFooterView
         tableView.dataSource = self
@@ -100,7 +94,7 @@ class MainViewController: UIViewController {
     }
 
     func updateUI() {
-        view.backgroundColor = .systemTeal
+        view.backgroundColor = .systemYellow
         title = "What do you up to?"
         
         [ timeLabel, resetButton, startPauseButton, bottomLineView, tableView ]
@@ -112,15 +106,15 @@ class MainViewController: UIViewController {
         }
         
         resetButton.snp.makeConstraints { make in
-            make.top.equalTo(timeLabel.snp.bottom).offset(32)
+            make.top.equalTo(timeLabel.snp.bottom).offset(16)
             make.leading.equalToSuperview().inset(32)
-            make.width.equalTo(80)
+            make.height.width.equalTo(80)
         }
         
         startPauseButton.snp.makeConstraints { make in
-            make.top.equalTo(timeLabel.snp.bottom).offset(32)
+            make.top.equalTo(timeLabel.snp.bottom).offset(16)
             make.trailing.equalToSuperview().inset(32)
-            make.width.equalTo(80)
+            make.height.width.equalTo(80)
         }
         
         bottomLineView.snp.makeConstraints { make in
@@ -199,4 +193,3 @@ extension MainViewController {
         }
     }
 }
-
