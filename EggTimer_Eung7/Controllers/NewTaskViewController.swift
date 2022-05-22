@@ -10,11 +10,10 @@ import SnapKit
 import PanModal
 
 class NewTaskViewController: UIViewController {
-    let viewModel = NewTaskViewModel()
-    var minutes: Int?
-    var seconds: Int?
+    var viewModel = TaskViewModel()
+    
     var keyboardHeight: CGFloat = 300
-    var confirmButtonCompletion: ((String, Int, Int) -> Void)?
+    var confirmButtonCompletion: ((MainViewModel) -> Void)?
     
     lazy var confirmButton: UIButton = {
         var config = UIButton.Configuration.filled()
@@ -28,7 +27,7 @@ class NewTaskViewController: UIViewController {
         
         return button
     }()
-
+    
     lazy var cancelButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.title = "Cancel"
@@ -126,7 +125,6 @@ class NewTaskViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
         setKeyboardObserver()
     }
@@ -149,7 +147,7 @@ class NewTaskViewController: UIViewController {
             object: nil
         )
     }
-
+    
     func setupUI() {
         view.backgroundColor = .systemBackground
         
@@ -187,12 +185,12 @@ class NewTaskViewController: UIViewController {
             make.leading.equalToSuperview().inset(16)
             make.top.equalTo(cancelButton.snp.bottom).offset(32)
         }
-        
+
         taskTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(taskLabel.snp.bottom).offset(8)
         }
-        
+
         bottomLineView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(taskTextField.snp.bottom).offset(4)
@@ -200,7 +198,7 @@ class NewTaskViewController: UIViewController {
         }
         
         timeLabel.snp.makeConstraints { make in
-            make.top.equalTo(taskTextField.snp.bottom).offset(32)
+            make.top.equalTo(taskTextField.snp.bottom).offset(16)
             make.leading.equalToSuperview().inset(16)
         }
         
@@ -220,12 +218,14 @@ extension NewTaskViewController {
     
     @objc func didTapConfirmButton(_ sender: UIButton) {
         guard let text = taskTextField.text,
-              let minutes = minutes,
-              let seconds = seconds else { return }
-        confirmButtonCompletion?(text, minutes, seconds)
-        dismiss(animated: true)
+              let minutes = viewModel.minutes,
+              let seconds = viewModel.seconds else { return }
+        let mainVM = viewModel.didTapConfirmButton(text, minutes: minutes, seconds: seconds)
+        confirmButtonCompletion?(mainVM)
     }
-    
+}
+// MARK: Keyboard methods
+extension NewTaskViewController {
     @objc func keyboardWillShow(_ noti: Notification) {
         if let keyboardFrame: NSValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
@@ -240,16 +240,14 @@ extension NewTaskViewController {
     }
 }
 
-
 // MARK: TextField Delegate
 extension NewTaskViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.text = ""
+        textField.text = ""; textField.textColor = .label
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.endEditing(true)
-        return true
+        textField.endEditing(true); return true
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -264,22 +262,22 @@ extension NewTaskViewController: UITextFieldDelegate {
 // MARK: PickerView Controller
 extension NewTaskViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
+        return viewModel.numberOfComponents
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return viewModel.pickerViewNumberOfRows
+        return viewModel.numberOfRowsInComponent
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return viewModel.listToString[row]
+        return viewModel.titleForRow[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == minutePickerView {
-            minutes = viewModel.list[row]
+            viewModel.minutes = viewModel.pickerViewlist[row]
         } else if pickerView == secondsPickerView {
-            seconds = viewModel.list[row]
+            viewModel.seconds = viewModel.pickerViewlist[row]
         }
     }
 }

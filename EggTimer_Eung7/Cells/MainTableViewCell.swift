@@ -10,7 +10,7 @@ import SnapKit
 
 class MainTableViewCell: UITableViewCell {
     static let identifier = "MainTableViewCell"
-    var deleteFood: () -> Void = {}
+    var deleteFoodVM: () -> Void = {}
     var setTimer: () -> Void = {}
     
     lazy var playButton: UIButton = {
@@ -60,9 +60,9 @@ class MainTableViewCell: UITableViewCell {
         setupUI()
     }
     
-    func setData(_ food: Food, _ timeString: String) {
-        nameLabel.text = food.name
-        timeLabel.text = timeString
+    func setData(_ vm: MainViewModel) {
+        nameLabel.text = vm.food.name
+        timeLabel.text = vm.timeString
     }
     
     func setupUI() {
@@ -99,7 +99,7 @@ class MainTableViewCell: UITableViewCell {
 
 extension MainTableViewCell {
     @objc func didTapDeleteButton() {
-        deleteFood()
+        deleteFoodVM()
     }
     
     @objc func didTapPlayButton() {

@@ -10,11 +10,7 @@ import SnapKit
 import PanModal
 
 class MainViewController: UIViewController {
-    let viewModel = MainViewModel()
-    var currentFood: Food?
-    var timer = Timer()
-    var remainingTime: Int = 0
-    var timerCounting: Bool = false
+    let viewModel = MainListViewModel()
     
     var timeLabel: UILabel = {
         let label = UILabel()
@@ -67,22 +63,23 @@ class MainViewController: UIViewController {
         footerView.presentNewTaskVC = { [weak self] in
             guard let self = self else { return }
             let vc = NewTaskViewController()
-            self.presentPanModal(vc)
-            
-            vc.confirmButtonCompletion = { name, minutes, seconds in
-                let food = self.viewModel.createFood(name, minutes: minutes, seconds: seconds)
-                self.viewModel.addFood(food)
+            // MARK: ComfirmButton Logic
+            vc.confirmButtonCompletion = { vm in
+                self.viewModel.appendMainViewModels(vm)
+                self.tableView.reloadData()
+                vc.dismiss(animated: true)
             }
+            self.presentPanModal(vc)
         }
         return footerView
     }()
-
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemTeal
         tableView.register(MainTableViewCell.self,
                            forCellReuseIdentifier: MainTableViewCell.identifier)
-        tableView.estimatedRowHeight = 150
+        tableView.rowHeight = 80
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .black
         tableView.allowsSelection = false
@@ -95,17 +92,13 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
-        // Data가 변화되었을 때 reloadTableView
-        viewModel.reloadCompletion = { [weak self] in
-            guard let self = self else { return }
-            self.tableView.reloadData()
-        }
     }
     
-    func updateNavigationTitle(_ food: Food) {
-        title = food.name
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
-    
+
     func updateUI() {
         view.backgroundColor = .systemTeal
         title = "What do you up to?"
@@ -116,7 +109,6 @@ class MainViewController: UIViewController {
         timeLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide).inset(16)
-            make.leading.trailing.equalToSuperview().inset(64)
         }
         
         resetButton.snp.makeConstraints { make in
@@ -147,34 +139,28 @@ class MainViewController: UIViewController {
 // MARK: TableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.foods.count
+        return viewModel.numberOfRowsInSection()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: MainTableViewCell.identifier,
             for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
-        let food = viewModel.foods[indexPath.row]
-        let time = self.viewModel.secondsToMinutesSeconds(food.seconds)
-        let string = self.viewModel.stringFromTime(time.0, time.1)
-        cell.setData(food, string)
+        let list = viewModel.mainViewModels[indexPath.row]
+        cell.setData(list)
         
-        // playButton 선택
-        cell.setTimer = {
-            self.startPauseButton.isSelected = false
-            self.timerCounting = false
-            self.timer.invalidate()
-            
-            self.currentFood = food
-            self.remainingTime = food.seconds
-            self.timeLabel.text = string
-            self.updateNavigationTitle(food)
+        // MARK: playButton 선택
+        cell.setTimer = { [weak self] in
+            self?.startPauseButton.isSelected = false
+            self?.timeLabel.text = list.timeString
+            self?.title = list.food.name
+            self?.viewModel.didTapPlayButton(list)
         }
         
-        // deleteButton 선택
-        cell.deleteFood = { [weak self] in
-            guard let self = self else { return }
-            self.viewModel.removeFood(indexPath.row)
+        // MARK: deleteButton 선택
+        cell.deleteFoodVM = { [weak self] in
+            self?.viewModel.removeMainViewModels(indexPath.row)
+            tableView.reloadData()
         }
         return cell
     }
@@ -183,37 +169,34 @@ extension MainViewController: UITableViewDataSource {
 // MARK: @objc Methods
 extension MainViewController {
     @objc func didTapResetButton(_ sender: UIButton) {
-        guard let currentFood = currentFood else { return }
-        remainingTime = currentFood.seconds
-        let time = viewModel.secondsToMinutesSeconds(currentFood.seconds)
-        let stringTime = viewModel.stringFromTime(time.0, time.1)
-        startPauseButton.isSelected = false
-        timerCounting = false
-        timer.invalidate()
-        timeLabel.text = stringTime
+        guard let vm = viewModel.currentFoodVM else { return }
+        timeLabel.text = viewModel.didTapResetButton(vm) {
+            startPauseButton.isSelected = false
+        }
     }
     
     @objc func didTapStartPauseButton(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        if timerCounting {
-            timerCounting = false
-            timer.invalidate()
+        sender.isSelected = !sender.isSelected; let state = sender.isSelected
+        if state {
+            viewModel.timer = Timer.scheduledTimer(
+                timeInterval: 1,
+                target: self,
+                selector: #selector(timerObserver),
+                userInfo: nil,
+                repeats: true
+            )
         } else {
-            timerCounting = true
-            timer = Timer.scheduledTimer(timeInterval: 1,
-                                         target: self,
-                                         selector: #selector(timerObserver),
-                                         userInfo: nil,
-                                         repeats: true)
+            viewModel.timer.invalidate()
         }
     }
-
+    
     @objc func timerObserver() {
-        if remainingTime > 0 {
-            remainingTime -= 1
-            let time = viewModel.secondsToMinutesSeconds(remainingTime)
-            let timeString = viewModel.stringFromTime(time.0, time.1)
+        if viewModel.remainingTime > 0 {
+            viewModel.remainingTime -= 1
+            let time = TimeManager.shared.secondsToMinutesSeconds(viewModel.remainingTime)
+            let timeString = TimeManager.shared.stringFromTime(time.0, time.1)
             timeLabel.text = timeString
         }
     }
 }
+
