@@ -54,10 +54,12 @@ class MainViewController: UIViewController {
             origin: CGPoint(x: 0, y: 0),
             size: CGSize(width: UIScreen.main.bounds.width, height: 80.0))
         )
+        
         // MARK: PlusButtonTap Logic
-        footerView.presentNewTaskVC = { [weak self] in
+        footerView.presentTaskVC = { [weak self] in
             guard let self = self else { return }
-            let vc = NewTaskViewController()
+            let vc = TaskViewController()
+            
             // MARK: ComfirmButton Logic
             vc.confirmButtonCompletion = { vm in
                 self.viewModel.appendMainViewModels(vm)
@@ -143,15 +145,15 @@ extension MainViewController: UITableViewDataSource {
         let list = viewModel.mainViewModels[indexPath.row]
         cell.setData(list)
         
-        // MARK: playButton 선택
+        // MARK: setTimer == playButton 선택
         cell.setTimer = { [weak self] in
             self?.startPauseButton.isSelected = false
             self?.timeLabel.text = list.timeString
-            self?.title = list.food.name
+            self?.title = list.name
             self?.viewModel.didTapPlayButton(list)
         }
-        
-        // MARK: deleteButton 선택
+
+        // MARK: deleteFoodVM == deleteButton 선택
         cell.deleteFoodVM = { [weak self] in
             self?.viewModel.removeMainViewModels(indexPath.row)
             tableView.reloadData()
@@ -165,7 +167,7 @@ extension MainViewController {
     @objc func didTapResetButton(_ sender: UIButton) {
         guard let vm = viewModel.currentFoodVM else { return }
         timeLabel.text = viewModel.didTapResetButton(vm) {
-            startPauseButton.isSelected = false
+            startPauseButton.isSelected = false // completion을 통해서 로직의 순서를 정해주고, 가독성을 높임.
         }
     }
     
@@ -175,7 +177,7 @@ extension MainViewController {
             viewModel.timer = Timer.scheduledTimer(
                 timeInterval: 1,
                 target: self,
-                selector: #selector(timerObserver),
+                selector: #selector(viewModel.timerObserver),
                 userInfo: nil,
                 repeats: true
             )
@@ -183,13 +185,8 @@ extension MainViewController {
             viewModel.timer.invalidate()
         }
     }
-    
+
     @objc func timerObserver() {
-        if viewModel.remainingTime > 0 {
-            viewModel.remainingTime -= 1
-            let time = TimeManager.shared.secondsToMinutesSeconds(viewModel.remainingTime)
-            let timeString = TimeManager.shared.stringFromTime(time.0, time.1)
-            timeLabel.text = timeString
-        }
+        viewModel.timerObserver() { timeLabel.text = $0 } // completion을 통해서 로직의 순서를 정해주고, 가독성을 높임
     }
 }

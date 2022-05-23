@@ -6,15 +6,16 @@
 //
 
 import Foundation
+import UIKit
 
-struct MainViewModel {
+struct MainViewModel { //
     let food: Food
 }
 
 extension MainViewModel {
+    var name: String { return food.name }
     var minutes: Int { return food.seconds / 60 }
     var seconds: Int { return food.seconds % 60 }
-    
     var timeString: String {
         var timeString = ""
         timeString += String(format: "%02d", minutes)
@@ -24,7 +25,7 @@ extension MainViewModel {
     }
 }
 // -----------------------------------------------------------------------------
-class MainListViewModel {
+class MainListViewModel { // Properties
     var mainViewModels: [MainViewModel]
     
     var currentFoodVM: MainViewModel?
@@ -61,5 +62,16 @@ extension MainListViewModel { // View의 로직모음
         completion()
         
         return timeString
+    }
+}
+
+extension MainListViewModel {
+    @objc func timerObserver(_ completion: (String) -> Void) {
+        if remainingTime > 0 {
+            remainingTime -= 1
+            let time = TimeManager.shared.secondsToMinutesSeconds(remainingTime)
+            let timeString = TimeManager.shared.stringFromTime(time.0, time.1)
+            completion(timeString)
+        }
     }
 }

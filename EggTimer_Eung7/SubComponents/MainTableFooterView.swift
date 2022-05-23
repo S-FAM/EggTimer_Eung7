@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class MainTableFooterView: UITableViewHeaderFooterView {
-    var presentNewTaskVC: () -> Void = {}
+    var presentTaskVC: () -> Void = {}
     
     var upperLine: UIView = {
         let view = UIView()
@@ -55,6 +55,6 @@ class MainTableFooterView: UITableViewHeaderFooterView {
 
 extension MainTableFooterView {
     @objc func didTapAddButton() {
-        presentNewTaskVC()
+        presentTaskVC()
     }
 }

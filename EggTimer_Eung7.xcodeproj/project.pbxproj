@@ -21,7 +21,7 @@
 		E556507D2832B38C005229F1 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E556507C2832B38C005229F1 /* RxSwift */; };
 		E556507F2832B429005229F1 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556507E2832B429005229F1 /* MainTableViewCell.swift */; };
 		E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5565080283344B0005229F1 /* MainTableFooterView.swift */; };
-		E57C442B2833CAE400CEE439 /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57C442A2833CAE400CEE439 /* NewTaskViewController.swift */; };
+		E57C442B2833CAE400CEE439 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57C442A2833CAE400CEE439 /* TaskViewController.swift */; };
 		E57C44312833CF9B00CEE439 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57C44302833CF9B00CEE439 /* TaskViewModel.swift */; };
 		E57C44362833EB6600CEE439 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = E57C44352833EB6600CEE439 /* PanModal */; };
 /* End PBXBuildFile section */
@@ -39,7 +39,7 @@
 		E556507528329D27005229F1 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		E556507E2832B429005229F1 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		E5565080283344B0005229F1 /* MainTableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableFooterView.swift; sourceTree = "<group>"; };
-		E57C442A2833CAE400CEE439 /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
+		E57C442A2833CAE400CEE439 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		E57C44302833CF9B00CEE439 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,7 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				E5565060283287CB005229F1 /* MainViewController.swift */,
-				E57C442A2833CAE400CEE439 /* NewTaskViewController.swift */,
+				E57C442A2833CAE400CEE439 /* TaskViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -231,7 +231,7 @@
 				E556505D283287CB005229F1 /* AppDelegate.swift in Sources */,
 				E556507F2832B429005229F1 /* MainTableViewCell.swift in Sources */,
 				E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */,
-				E57C442B2833CAE400CEE439 /* NewTaskViewController.swift in Sources */,
+				E57C442B2833CAE400CEE439 /* TaskViewController.swift in Sources */,
 				E556505F283287CB005229F1 /* SceneDelegate.swift in Sources */,
 				E5105AFB283A1D8400AE83CB /* TimeManager.swift in Sources */,
 				E57C44312833CF9B00CEE439 /* TaskViewModel.swift in Sources */,

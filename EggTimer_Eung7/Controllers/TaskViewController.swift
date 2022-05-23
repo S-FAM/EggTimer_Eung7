@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import PanModal
 
-class NewTaskViewController: UIViewController {
+class TaskViewController: UIViewController {
     var viewModel = TaskViewModel()
     
     var keyboardHeight: CGFloat = 300
@@ -210,8 +210,8 @@ class NewTaskViewController: UIViewController {
     }
 }
 
-// MARK: @objc methods
-extension NewTaskViewController {
+// MARK: Button Methods
+extension TaskViewController {
     @objc func didTapCancelButton(_ sender: UIButton) {
         dismiss(animated: true)
     }
@@ -221,27 +221,13 @@ extension NewTaskViewController {
               let minutes = viewModel.minutes,
               let seconds = viewModel.seconds else { return }
         let mainVM = viewModel.didTapConfirmButton(text, minutes: minutes, seconds: seconds)
+        // mainVC에 mainVM을 전달해준다.
         confirmButtonCompletion?(mainVM)
-    }
-}
-// MARK: Keyboard methods
-extension NewTaskViewController {
-    @objc func keyboardWillShow(_ noti: Notification) {
-        if let keyboardFrame: NSValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let height = keyboardRectangle.height
-            keyboardHeight = height
-            self.panModalTransition(to: .longForm)
-        }
-    }
-    
-    @objc func keyBoardWillHide(_ noti: Notification) {
-        self.panModalTransition(to: .shortForm)
     }
 }
 
 // MARK: TextField Delegate
-extension NewTaskViewController: UITextFieldDelegate {
+extension TaskViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.text = ""; textField.textColor = .label
     }
@@ -260,7 +246,7 @@ extension NewTaskViewController: UITextFieldDelegate {
 }
 
 // MARK: PickerView Controller
-extension NewTaskViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+extension TaskViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return viewModel.numberOfComponents
     }
@@ -270,7 +256,7 @@ extension NewTaskViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return viewModel.titleForRow[row]
+        return viewModel.titles[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -283,7 +269,7 @@ extension NewTaskViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 }
 
 // MARK: PanModal Controller
-extension NewTaskViewController: PanModalPresentable {
+extension TaskViewController: PanModalPresentable {
     var panScrollable: UIScrollView? {
         return nil
     }
@@ -294,5 +280,21 @@ extension NewTaskViewController: PanModalPresentable {
     
     var longFormHeight: PanModalHeight {
         return .contentHeight(keyboardHeight + 180)
+    }
+}
+
+// MARK: Keyboard methods
+private extension TaskViewController {
+    @objc func keyboardWillShow(_ noti: Notification) {
+        if let keyboardFrame: NSValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let height = keyboardRectangle.height
+            keyboardHeight = height
+            self.panModalTransition(to: .longForm)
+        }
+    }
+    
+    @objc func keyBoardWillHide(_ noti: Notification) {
+        self.panModalTransition(to: .shortForm)
     }
 }

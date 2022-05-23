@@ -17,7 +17,7 @@ class TaskViewModel {
 extension TaskViewModel {
     var numberOfRowsInComponent: Int { return pickerViewlist.count }
     var numberOfComponents: Int { return 1 }
-    var titleForRow: [String] { return pickerViewlist.map { String($0) }}
+    var titles: [String] { return pickerViewlist.map { String($0) }}
 }
 
 extension TaskViewModel {
