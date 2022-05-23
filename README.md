@@ -4,6 +4,8 @@
 ---
 + SnapKit
 + PanModal
-+ MVVM 연습하기 (⭐️)
++ MVVM 
 
+
+![image](https://user-images.githubusercontent.com/97531269/169724537-004a1940-89b1-4383-9d3d-1786020fd22f.png)
 
