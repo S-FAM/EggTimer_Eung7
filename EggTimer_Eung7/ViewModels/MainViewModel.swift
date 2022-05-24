@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct MainViewModel { //
+struct MainViewModel {
     let food: Food
 }
 
@@ -24,8 +24,8 @@ extension MainViewModel {
         return timeString
     }
 }
-// -----------------------------------------------------------------------------
-class MainListViewModel { // Properties
+
+class MainListViewModel { 
     var mainViewModels: [MainViewModel]
     
     var currentFoodVM: MainViewModel?
@@ -57,8 +57,8 @@ extension MainListViewModel { // View의 로직모음
     func didTapResetButton(_ vm: MainViewModel, completion: () -> Void) -> String {
         timer.invalidate()
         remainingTime = vm.food.seconds
-        let time = TimeManager.shared.secondsToMinutesSeconds(vm.food.seconds)
-        let timeString = TimeManager.shared.stringFromTime(time.0, time.1)
+        let time = TimeTransforming.shared.secondsToMinutesSeconds(vm.food.seconds)
+        let timeString = TimeTransforming.shared.stringFromTime(time.0, time.1)
         completion()
         
         return timeString
@@ -69,8 +69,8 @@ extension MainListViewModel {
     @objc func timerObserver(_ completion: (String) -> Void) {
         if remainingTime > 0 {
             remainingTime -= 1
-            let time = TimeManager.shared.secondsToMinutesSeconds(remainingTime)
-            let timeString = TimeManager.shared.stringFromTime(time.0, time.1)
+            let time = TimeTransforming.shared.secondsToMinutesSeconds(remainingTime)
+            let timeString = TimeTransforming.shared.stringFromTime(time.0, time.1)
             completion(timeString)
         }
     }

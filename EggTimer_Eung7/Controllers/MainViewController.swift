@@ -21,22 +21,23 @@ class MainViewController: UIViewController {
     }()
     
     lazy var resetButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .systemBackground
-        button.layer.cornerRadius = 40.0
-        button.setTitle("Reset", for: .normal)
-        button.setTitleColor(UIColor.label, for: .normal)
+        var config = UIButton.Configuration.filled()
+        config.title = "Reset"
+        config.baseBackgroundColor = .orange
+        config.cornerStyle = .capsule
+        let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapResetButton(_:)), for: .touchUpInside)
         
         return button
     }()
     
     lazy var startPauseButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 40.0
-        button.backgroundColor = .systemOrange
-        button.setTitle("Start", for: .normal)
-        button.setTitle("Pause", for: .selected)
+        var config = UIButton.Configuration.filled()
+        config.cornerStyle = .capsule
+        config.baseBackgroundColor = .systemGray6
+        config.baseForegroundColor = .label
+        config.title = "Start"
+        let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapStartPauseButton(_:)), for: .touchUpInside)
         
         return button
@@ -94,7 +95,7 @@ class MainViewController: UIViewController {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
-
+    
     func updateUI() {
         view.backgroundColor = .systemYellow
         title = "What do you up to?"
@@ -165,28 +166,30 @@ extension MainViewController: UITableViewDataSource {
 // MARK: @objc Methods
 extension MainViewController {
     @objc func didTapResetButton(_ sender: UIButton) {
-        guard let vm = viewModel.currentFoodVM else { return }
-        timeLabel.text = viewModel.didTapResetButton(vm) {
-            startPauseButton.isSelected = false // completion을 통해서 로직의 순서를 정해주고, 가독성을 높임.
+        guard let vm = self.viewModel.currentFoodVM else { return }
+        self.timeLabel.text = self.viewModel.didTapResetButton(vm) {
+            self.startPauseButton.isSelected = false // completion을 통해서 로직의 순서를 정해주고, 가독성을 높임.
         }
     }
     
     @objc func didTapStartPauseButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected; let state = sender.isSelected
         if state {
+            sender.setTitle("Pause", for: .selected)
             viewModel.timer = Timer.scheduledTimer(
                 timeInterval: 1,
                 target: self,
-                selector: #selector(viewModel.timerObserver),
+                selector: #selector(timerObserver),
                 userInfo: nil,
                 repeats: true
             )
         } else {
+            sender.setTitle("Start", for: .normal)
             viewModel.timer.invalidate()
         }
     }
-
+    
     @objc func timerObserver() {
-        viewModel.timerObserver() { timeLabel.text = $0 } // completion을 통해서 로직의 순서를 정해주고, 가독성을 높임
+        viewModel.timerObserver() { timeLabel.text = $0 } /// completion을 통해서 로직의 순서를 정해주고, 가독성을 높임
     }
 }

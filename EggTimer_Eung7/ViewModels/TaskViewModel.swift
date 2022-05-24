@@ -22,7 +22,7 @@ extension TaskViewModel {
 
 extension TaskViewModel {
     func didTapConfirmButton(_ text: String, minutes: Int, seconds: Int) -> MainViewModel {
-        let seconds = TimeManager.shared.minutesSecondsToSeconds(minutes, seconds)
+        let seconds = TimeTransforming.shared.minutesSecondsToSeconds(minutes, seconds)
         return MainViewModel(food: Food(name: text, seconds: seconds))
     }
 }

@@ -7,11 +7,11 @@
 
 import Foundation
 
-class TimeManager {
-    static let shared = TimeManager()
+class TimeTransforming {
+    static let shared = TimeTransforming()
 }
 
-extension TimeManager {
+extension TimeTransforming {
     func stringFromTime(_ minute: Int, _ seconds: Int) -> String {
         var timeString = ""
         timeString += String(format: "%02d", minute)

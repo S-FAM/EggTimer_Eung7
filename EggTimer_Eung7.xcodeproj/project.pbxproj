@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E5105AEC2839E69000AE83CB /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5105AEB2839E69000AE83CB /* Food.swift */; };
-		E5105AFB283A1D8400AE83CB /* TimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5105AFA283A1D8400AE83CB /* TimeManager.swift */; };
+		E5105AFB283A1D8400AE83CB /* TimeTransforming.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5105AFA283A1D8400AE83CB /* TimeTransforming.swift */; };
 		E556505D283287CB005229F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556505C283287CB005229F1 /* AppDelegate.swift */; };
 		E556505F283287CB005229F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556505E283287CB005229F1 /* SceneDelegate.swift */; };
 		E5565061283287CB005229F1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5565060283287CB005229F1 /* MainViewController.swift */; };
@@ -28,7 +28,7 @@
 
 /* Begin PBXFileReference section */
 		E5105AEB2839E69000AE83CB /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
-		E5105AFA283A1D8400AE83CB /* TimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeManager.swift; sourceTree = "<group>"; };
+		E5105AFA283A1D8400AE83CB /* TimeTransforming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTransforming.swift; sourceTree = "<group>"; };
 		E5565059283287CB005229F1 /* EggTimer_Eung7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EggTimer_Eung7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E556505C283287CB005229F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E556505E283287CB005229F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 		E5105AF9283A1D4300AE83CB /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				E5105AFA283A1D8400AE83CB /* TimeManager.swift */,
+				E5105AFA283A1D8400AE83CB /* TimeTransforming.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -233,7 +233,7 @@
 				E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */,
 				E57C442B2833CAE400CEE439 /* TaskViewController.swift in Sources */,
 				E556505F283287CB005229F1 /* SceneDelegate.swift in Sources */,
-				E5105AFB283A1D8400AE83CB /* TimeManager.swift in Sources */,
+				E5105AFB283A1D8400AE83CB /* TimeTransforming.swift in Sources */,
 				E57C44312833CF9B00CEE439 /* TaskViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
