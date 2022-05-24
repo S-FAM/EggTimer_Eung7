@@ -168,14 +168,18 @@ extension MainViewController {
     @objc func didTapResetButton(_ sender: UIButton) {
         guard let vm = self.viewModel.currentFoodVM else { return }
         self.timeLabel.text = self.viewModel.didTapResetButton(vm) {
-            self.startPauseButton.isSelected = false // completion을 통해서 로직의 순서를 정해주고, 가독성을 높임.
+            self.startPauseButton.isSelected = false
+            self.title = vm.name
+            /// completion을 통해서 로직의 순서를 정해주고, 가독성을 높임.
         }
     }
     
     @objc func didTapStartPauseButton(_ sender: UIButton) {
+        guard let currentFoodVM = viewModel.currentFoodVM else { return }
         sender.isSelected = !sender.isSelected; let state = sender.isSelected
         if state {
             sender.setTitle("Pause", for: .selected)
+            title = String(format: "⏰ %@ ⏰", currentFoodVM.name)
             viewModel.timer = Timer.scheduledTimer(
                 timeInterval: 1,
                 target: self,
@@ -185,6 +189,7 @@ extension MainViewController {
             )
         } else {
             sender.setTitle("Start", for: .normal)
+            title = currentFoodVM.name
             viewModel.timer.invalidate()
         }
     }
