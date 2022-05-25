@@ -24,6 +24,9 @@
 		E57C442B2833CAE400CEE439 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57C442A2833CAE400CEE439 /* TaskViewController.swift */; };
 		E57C44312833CF9B00CEE439 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57C44302833CF9B00CEE439 /* TaskViewModel.swift */; };
 		E57C44362833EB6600CEE439 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = E57C44352833EB6600CEE439 /* PanModal */; };
+		E5DEC443283E280A00B3D58E /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEC442283E280A00B3D58E /* ContainerViewController.swift */; };
+		E5DEC445283E284700B3D58E /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEC444283E284700B3D58E /* MenuViewController.swift */; };
+		E5DEC447283E423B00B3D58E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEC446283E423B00B3D58E /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +44,9 @@
 		E5565080283344B0005229F1 /* MainTableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableFooterView.swift; sourceTree = "<group>"; };
 		E57C442A2833CAE400CEE439 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		E57C44302833CF9B00CEE439 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
+		E5DEC442283E280A00B3D58E /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		E5DEC444283E284700B3D58E /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		E5DEC446283E423B00B3D58E /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,8 +85,11 @@
 		E539D0B928388B9D00A02A88 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E5DEC442283E280A00B3D58E /* ContainerViewController.swift */,
+				E5DEC444283E284700B3D58E /* MenuViewController.swift */,
 				E5565060283287CB005229F1 /* MainViewController.swift */,
 				E57C442A2833CAE400CEE439 /* TaskViewController.swift */,
+				E5DEC446283E423B00B3D58E /* SettingsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -228,11 +237,14 @@
 				E5105AEC2839E69000AE83CB /* Food.swift in Sources */,
 				E556507628329D27005229F1 /* MainViewModel.swift in Sources */,
 				E5565061283287CB005229F1 /* MainViewController.swift in Sources */,
+				E5DEC443283E280A00B3D58E /* ContainerViewController.swift in Sources */,
 				E556505D283287CB005229F1 /* AppDelegate.swift in Sources */,
 				E556507F2832B429005229F1 /* MainTableViewCell.swift in Sources */,
 				E5565081283344B0005229F1 /* MainTableFooterView.swift in Sources */,
+				E5DEC445283E284700B3D58E /* MenuViewController.swift in Sources */,
 				E57C442B2833CAE400CEE439 /* TaskViewController.swift in Sources */,
 				E556505F283287CB005229F1 /* SceneDelegate.swift in Sources */,
+				E5DEC447283E423B00B3D58E /* SettingsViewController.swift in Sources */,
 				E5105AFB283A1D8400AE83CB /* TimeTransforming.swift in Sources */,
 				E57C44312833CF9B00CEE439 /* TaskViewModel.swift in Sources */,
 			);

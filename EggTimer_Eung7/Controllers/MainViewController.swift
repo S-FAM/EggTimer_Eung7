@@ -9,8 +9,13 @@ import UIKit
 import SnapKit
 import PanModal
 
+protocol MainViewControllerDelegate: AnyObject {
+    func didTapMenuButton()
+}
+
 class MainViewController: UIViewController {
     let viewModel = MainListViewModel()
+    weak var delegate: MainViewControllerDelegate?
     
     var timeLabel: UILabel = {
         let label = UILabel()
@@ -99,6 +104,14 @@ class MainViewController: UIViewController {
     func updateUI() {
         view.backgroundColor = .systemYellow
         title = "What do you up to?"
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "list.triangle"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapMenuButton)
+        )
+        navigationController?.navigationBar.tintColor = .label
         
         [ timeLabel, resetButton, startPauseButton, bottomLineView, tableView ]
             .forEach { view.addSubview($0) }
@@ -192,6 +205,10 @@ extension MainViewController {
             title = currentFoodVM.name
             viewModel.timer.invalidate()
         }
+    }
+    
+    @objc func didTapMenuButton() {
+        delegate?.didTapMenuButton()
     }
     
     @objc func timerObserver() {
