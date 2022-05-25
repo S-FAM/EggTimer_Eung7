@@ -7,5 +7,6 @@
 + MVVM 
 
 
-![image](https://user-images.githubusercontent.com/97531269/169724537-004a1940-89b1-4383-9d3d-1786020fd22f.png)
+![image](https://user-images.githubusercontent.com/97531269/170249448-c3ae8fd7-3874-4cb4-be78-16cc530f68f8.png)
+
 
