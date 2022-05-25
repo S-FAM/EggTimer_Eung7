@@ -16,7 +16,10 @@ protocol MainTableViewCellDelegate: AnyObject {
 class MainTableViewCell: UITableViewCell {
     static let identifier = "MainTableViewCell"
     weak var delegate: MainTableViewCellDelegate?
+    var currentIndex: Int?
     var mainVM: MainViewModel!
+    
+    var deleteAnimation: () -> Void = {}
     
     lazy var playButton: UIButton = {
         var config = UIButton.Configuration.filled()
@@ -106,6 +109,7 @@ class MainTableViewCell: UITableViewCell {
 extension MainTableViewCell {
     @objc func didTapDeleteButton() {
         delegate?.didTapDeleteButton(mainVM)
+        deleteAnimation()
     }
     
     @objc func didTapPlayButton() {

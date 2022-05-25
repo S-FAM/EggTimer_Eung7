@@ -72,6 +72,10 @@ extension MainListViewModel { // View의 로직모음
         
         return timeString
     }
+    
+    func cellAnimation(_ index: Int) {
+        
+    }
 }
 
 extension MainListViewModel {

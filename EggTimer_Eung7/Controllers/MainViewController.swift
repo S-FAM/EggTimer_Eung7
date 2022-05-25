@@ -146,8 +146,21 @@ extension MainViewController: UITableViewDataSource {
             for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
         let list = viewModel.mainViewModels[indexPath.row]
         cell.setData(list)
+        cell.currentIndex = indexPath.row
         cell.delegate = self
+        
+        cell.deleteAnimation = {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+                guard let cell = tableView.cellForRow(at: indexPath) else { return }
+                cell.frame.origin.x = cell.frame.origin.x + cell.frame.width * 1.5
+            } completion: { done in
+                if done {
+                    tableView.reloadData()
+                }
+            }
 
+        }
+        
         return cell
     }
 }
@@ -169,7 +182,6 @@ extension MainViewController: MainTableViewCellDelegate, MainTableFooterViewDele
     // MARK: DeleteButton
     func didTapDeleteButton(_ vm: MainViewModel) {
         viewModel.removeMainViewModels(vm)
-        tableView.reloadData()
     }
     
     // MARK: PlayButton
