@@ -11,7 +11,3 @@
 + Architecture Overview
 
 
-
-![image](https://user-images.githubusercontent.com/97531269/170249448-c3ae8fd7-3874-4cb4-be78-16cc530f68f8.png)
-
-
