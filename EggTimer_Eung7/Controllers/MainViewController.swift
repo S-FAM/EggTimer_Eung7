@@ -218,6 +218,6 @@ extension MainViewController: MainTableViewCellDelegate, MainTableFooterViewDele
 
 extension MainViewController {
     @objc func timerObserver() {
-        viewModel.timerObserver() { timeLabel.text = $0 } /// completion을 통해서 로직의 순서를 정해주고, 가독성을 높임
+        viewModel.timerObserver() { timeLabel.text = $0 }
     }
 }

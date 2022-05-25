@@ -100,6 +100,6 @@ extension ContainerViewController: MenuViewControllerDelegate {
     func resetToHome() {
         settingsVC.view.removeFromSuperview()
         settingsVC.didMove(toParent: nil)
-        mainVC.title = "What do you up to?"
+        mainVC.title = mainVC.viewModel.currentFoodVM?.name
     }
 }

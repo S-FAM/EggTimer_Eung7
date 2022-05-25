@@ -41,6 +41,7 @@ class MenuViewController: UIViewController {
     lazy var tableView: UITableView = {
         let table = UITableView()
         table.backgroundColor = nil
+        table.separatorStyle = .none
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         table.dataSource = self
         table.delegate = self
@@ -54,7 +55,7 @@ class MenuViewController: UIViewController {
     }
     
     func setupUI() {
-        view.backgroundColor = .darkGray
+        view.backgroundColor = .systemGray6
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints { make in
@@ -70,12 +71,12 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.contentView.backgroundColor = .darkGray
+        cell.contentView.backgroundColor = .systemGray6
         cell.imageView?.image = UIImage(systemName: MenuOptions.allCases[indexPath.row].imageName)
         cell.imageView?.backgroundColor = nil
-        cell.imageView?.tintColor = .systemBackground
+        cell.imageView?.tintColor = .label
         cell.textLabel?.text = MenuOptions.allCases[indexPath.row].rawValue
-        cell.textLabel?.textColor = .systemBackground
+        cell.textLabel?.textColor = .label
         
         return cell
     }
