@@ -16,7 +16,6 @@ protocol MainTableViewCellDelegate: AnyObject {
 class MainTableViewCell: UITableViewCell {
     static let identifier = "MainTableViewCell"
     weak var delegate: MainTableViewCellDelegate?
-    var currentIndex: Int?
     var mainVM: MainViewModel!
     
     var deleteAnimation: () -> Void = {}

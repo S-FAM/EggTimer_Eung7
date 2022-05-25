@@ -146,21 +146,23 @@ extension MainViewController: UITableViewDataSource {
             for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
         let list = viewModel.mainViewModels[indexPath.row]
         cell.setData(list)
-        cell.currentIndex = indexPath.row
         cell.delegate = self
-        
         cell.deleteAnimation = {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
-                guard let cell = tableView.cellForRow(at: indexPath) else { return }
-                cell.frame.origin.x = cell.frame.origin.x + cell.frame.width * 1.5
-            } completion: { done in
-                if done {
-                    tableView.reloadData()
+                for i in indexPath.row...self.viewModel.mainViewModels.count {
+                let indexPath = IndexPath(row: i, section: 0)
+                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+                    guard let cell = tableView.cellForRow(at: indexPath) else { return }
+                    cell.frame.origin.y -= cell.frame.height
+                } completion: { done in
+                    if done {
+                        tableView.reloadData()
+                    }
                 }
             }
-
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+                self.tableFooterView.frame.origin.y -= cell.frame.height
+            }, completion: nil)
         }
-        
         return cell
     }
 }
