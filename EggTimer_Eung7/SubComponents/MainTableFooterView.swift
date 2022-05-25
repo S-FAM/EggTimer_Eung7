@@ -8,8 +8,12 @@
 import UIKit
 import SnapKit
 
+protocol MainTableFooterViewDelegate: AnyObject {
+    func didTapAddButton()
+}
+
 class MainTableFooterView: UITableViewHeaderFooterView {
-    var presentTaskVC: () -> Void = {}
+    weak var delegate: MainTableFooterViewDelegate?
     
     var upperLine: UIView = {
         let view = UIView()
@@ -55,6 +59,6 @@ class MainTableFooterView: UITableViewHeaderFooterView {
 
 extension MainTableFooterView {
     @objc func didTapAddButton() {
-        presentTaskVC()
+        delegate?.didTapAddButton()
     }
 }

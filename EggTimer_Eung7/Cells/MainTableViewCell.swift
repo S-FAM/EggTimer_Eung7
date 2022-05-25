@@ -8,10 +8,15 @@
 import UIKit
 import SnapKit
 
+protocol MainTableViewCellDelegate: AnyObject {
+    func didTapDeleteButton(_ vm: MainViewModel)
+    func didTapPlayButton(_ vm: MainViewModel)
+}
+
 class MainTableViewCell: UITableViewCell {
     static let identifier = "MainTableViewCell"
-    var deleteFoodVM: () -> Void = {}
-    var setTimer: () -> Void = {}
+    weak var delegate: MainTableViewCellDelegate?
+    var mainVM: MainViewModel!
     
     lazy var playButton: UIButton = {
         var config = UIButton.Configuration.filled()
@@ -63,6 +68,7 @@ class MainTableViewCell: UITableViewCell {
     func setData(_ vm: MainViewModel) {
         nameLabel.text = vm.food.name
         timeLabel.text = vm.timeString
+        mainVM = vm
     }
     
     func setupUI() {
@@ -99,10 +105,10 @@ class MainTableViewCell: UITableViewCell {
 
 extension MainTableViewCell {
     @objc func didTapDeleteButton() {
-        deleteFoodVM()
+        delegate?.didTapDeleteButton(mainVM)
     }
     
     @objc func didTapPlayButton() {
-        setTimer()
+        delegate?.didTapPlayButton(mainVM)
     }
 }

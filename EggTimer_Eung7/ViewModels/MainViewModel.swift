@@ -44,9 +44,18 @@ class MainListViewModel {
 }
 
 extension MainListViewModel { // View의 로직모음
-    func numberOfRowsInSection() -> Int { return mainViewModels.count }
-    func removeMainViewModels(_ index: Int) { mainViewModels.remove(at: index) }
-    func appendMainViewModels(_ vm: MainViewModel) { mainViewModels.append(vm) }
+    func numberOfRowsInSection() -> Int {
+        return mainViewModels.count
+    }
+
+    func appendMainViewModels(_ vm: MainViewModel) {
+        mainViewModels.append(vm)
+    }
+
+    func removeMainViewModels(_ vm: MainViewModel) {
+        let index = mainViewModels.firstIndex { $0.name == vm.name }
+        mainViewModels.remove(at: index!)
+    }
     
     func didTapPlayButton(_ vm: MainViewModel) {
         timer.invalidate()

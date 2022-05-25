@@ -60,20 +60,8 @@ class MainViewController: UIViewController {
             origin: CGPoint(x: 0, y: 0),
             size: CGSize(width: UIScreen.main.bounds.width, height: 80.0))
         )
+        footerView.delegate = self
         
-        // MARK: PlusButtonTap Logic
-        footerView.presentTaskVC = { [weak self] in
-            guard let self = self else { return }
-            let vc = TaskViewController()
-            
-            // MARK: ComfirmButton Logic
-            vc.confirmButtonCompletion = { vm in
-                self.viewModel.appendMainViewModels(vm)
-                self.tableView.reloadData()
-                vc.dismiss(animated: true)
-            }
-            self.presentPanModal(vc)
-        }
         return footerView
     }()
     
@@ -158,35 +146,50 @@ extension MainViewController: UITableViewDataSource {
             for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
         let list = viewModel.mainViewModels[indexPath.row]
         cell.setData(list)
-        
-        // MARK: setTimer == playButton 선택
-        cell.setTimer = { [weak self] in
-            self?.startPauseButton.isSelected = false
-            self?.timeLabel.text = list.timeString
-            self?.title = list.name
-            self?.viewModel.didTapPlayButton(list)
-        }
+        cell.delegate = self
 
-        // MARK: deleteFoodVM == deleteButton 선택
-        cell.deleteFoodVM = { [weak self] in
-            self?.viewModel.removeMainViewModels(indexPath.row)
-            tableView.reloadData()
-        }
         return cell
     }
 }
 
-// MARK: @objc Methods
-extension MainViewController {
+extension MainViewController: MainTableViewCellDelegate, MainTableFooterViewDelegate, TaskViewControllerDelegate {
+    // MARK: AddButton
+    func didTapAddButton() {
+        let vc = TaskViewController()
+        vc.delegate = self
+        self.presentPanModal(vc)
+    }
+    
+    // MARK: ConfirmButton
+    func didTapConfirmButton(_ vm: MainViewModel) {
+        self.viewModel.appendMainViewModels(vm)
+        self.tableView.reloadData()
+    }
+    
+    // MARK: DeleteButton
+    func didTapDeleteButton(_ vm: MainViewModel) {
+        viewModel.removeMainViewModels(vm)
+        tableView.reloadData()
+    }
+    
+    // MARK: PlayButton
+    func didTapPlayButton(_ vm: MainViewModel) {
+        startPauseButton.isSelected = false
+        timeLabel.text = vm.timeString
+        title = vm.name
+        viewModel.didTapPlayButton(vm)
+    }
+    
+    // MARK: ResetButton
     @objc func didTapResetButton(_ sender: UIButton) {
         guard let vm = self.viewModel.currentFoodVM else { return }
         self.timeLabel.text = self.viewModel.didTapResetButton(vm) {
             self.startPauseButton.isSelected = false
             self.title = vm.name
-            /// completion을 통해서 로직의 순서를 정해주고, 가독성을 높임.
         }
     }
     
+    // MARK: StartPauseButton
     @objc func didTapStartPauseButton(_ sender: UIButton) {
         guard let currentFoodVM = viewModel.currentFoodVM else { return }
         sender.isSelected = !sender.isSelected; let state = sender.isSelected
@@ -207,10 +210,13 @@ extension MainViewController {
         }
     }
     
+    // MARK: MenuButton
     @objc func didTapMenuButton() {
         delegate?.didTapMenuButton()
     }
-    
+}
+
+extension MainViewController {
     @objc func timerObserver() {
         viewModel.timerObserver() { timeLabel.text = $0 } /// completion을 통해서 로직의 순서를 정해주고, 가독성을 높임
     }

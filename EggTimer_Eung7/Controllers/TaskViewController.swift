@@ -9,8 +9,13 @@ import UIKit
 import SnapKit
 import PanModal
 
+protocol TaskViewControllerDelegate: AnyObject {
+    func didTapConfirmButton(_ vm: MainViewModel)
+}
+
 class TaskViewController: UIViewController {
     var viewModel = TaskViewModel()
+    weak var delegate: TaskViewControllerDelegate?
     
     var keyboardHeight: CGFloat = 300
     var confirmButtonCompletion: ((MainViewModel) -> Void)?
@@ -221,8 +226,8 @@ extension TaskViewController {
               let minutes = viewModel.minutes,
               let seconds = viewModel.seconds else { return }
         let mainVM = viewModel.didTapConfirmButton(text, minutes: minutes, seconds: seconds)
-        // mainVC에 mainVM을 전달해준다.
-        confirmButtonCompletion?(mainVM)
+        delegate?.didTapConfirmButton(mainVM)
+        dismiss(animated: true)
     }
 }
 
