@@ -92,13 +92,6 @@ class MainViewController: UIViewController {
     func updateUI() {
         view.backgroundColor = .systemYellow
         title = "What do you up to?"
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "list.triangle"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapMenuButton)
-        )
         navigationController?.navigationBar.tintColor = .label
         
         [ timeLabel, resetButton, startPauseButton, bottomLineView, tableView ]
@@ -151,6 +144,7 @@ extension MainViewController: UITableViewDataSource {
     }
 }
 
+// MARK: Buttons
 extension MainViewController: MainTableViewCellDelegate, MainTableFooterViewDelegate, TaskViewControllerDelegate {
     // MARK: AddButton
     func didTapAddButton() {
@@ -173,15 +167,13 @@ extension MainViewController: MainTableViewCellDelegate, MainTableFooterViewDele
     }
     
     private func deleteAnimation(_ index: Int) {
-        for i in index...viewModel.mainViewModels.count { /// count는 1부터 센다...!
+        for i in index...viewModel.mainViewModels.count {
             let indexPath = IndexPath(row: i, section: 0)
             guard let cell = tableView.cellForRow(at: indexPath) else { return }
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
                 cell.frame.origin.y -= cell.frame.height
             }, completion: { done in
-                if done {
-                    self.tableView.reloadData()
-                }
+                if done { self.tableView.reloadData() }
             })
         }
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
@@ -226,15 +218,30 @@ extension MainViewController: MainTableViewCellDelegate, MainTableFooterViewDele
             viewModel.timer.invalidate()
         }
     }
+}
+
+// MARK: Enter BackGround or ForeGround
+extension MainViewController: timeDelivery {
+    func sceneDidEnterBackground() {
+        viewModel.timer.invalidate()
+    }
     
-    // MARK: MenuButton
-    @objc func didTapMenuButton() {
-        delegate?.didTapMenuButton()
+    func sceneWillEnterForeground(_ interval: Int) {
+        viewModel.remainingTime -= interval
+        viewModel.timer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(timerObserver),
+            userInfo: nil,
+            repeats: true
+        )
     }
 }
 
+// MARK: TimeObserver
 extension MainViewController {
     @objc func timerObserver() {
         viewModel.timerObserver() { timeLabel.text = $0 }
     }
 }
+

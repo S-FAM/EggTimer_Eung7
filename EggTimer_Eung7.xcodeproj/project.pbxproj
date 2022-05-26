@@ -73,6 +73,15 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		E51A3733283FD62100DF074B /* Trash */ = {
+			isa = PBXGroup;
+			children = (
+				E5DEC444283E284700B3D58E /* MenuViewController.swift */,
+				E5DEC442283E280A00B3D58E /* ContainerViewController.swift */,
+			);
+			path = Trash;
+			sourceTree = "<group>";
+		};
 		E539D0B828388B9300A02A88 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -85,8 +94,6 @@
 		E539D0B928388B9D00A02A88 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E5DEC442283E280A00B3D58E /* ContainerViewController.swift */,
-				E5DEC444283E284700B3D58E /* MenuViewController.swift */,
 				E5565060283287CB005229F1 /* MainViewController.swift */,
 				E57C442A2833CAE400CEE439 /* TaskViewController.swift */,
 				E5DEC446283E423B00B3D58E /* SettingsViewController.swift */,
@@ -121,6 +128,7 @@
 				E539D0B928388B9D00A02A88 /* Controllers */,
 				E57C442D2833CAEC00CEE439 /* Cells */,
 				E57C442F2833CAF600CEE439 /* SubComponents */,
+				E51A3733283FD62100DF074B /* Trash */,
 				E5565065283287CD005229F1 /* Assets.xcassets */,
 				E5565067283287CD005229F1 /* LaunchScreen.storyboard */,
 				E556506A283287CD005229F1 /* Info.plist */,
