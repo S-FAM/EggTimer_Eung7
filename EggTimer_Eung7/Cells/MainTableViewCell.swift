@@ -18,8 +18,6 @@ class MainTableViewCell: UITableViewCell {
     weak var delegate: MainTableViewCellDelegate?
     var mainVM: MainViewModel!
     
-    var deleteAnimation: () -> Void = {}
-    
     lazy var playButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.image = UIImage(systemName: "play.circle")
@@ -108,7 +106,6 @@ class MainTableViewCell: UITableViewCell {
 extension MainTableViewCell {
     @objc func didTapDeleteButton() {
         delegate?.didTapDeleteButton(mainVM)
-        deleteAnimation()
     }
     
     @objc func didTapPlayButton() {

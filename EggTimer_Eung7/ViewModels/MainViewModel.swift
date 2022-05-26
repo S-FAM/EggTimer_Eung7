@@ -53,8 +53,8 @@ extension MainListViewModel { // View의 로직모음
     }
 
     func removeMainViewModels(_ vm: MainViewModel) {
-        let index = mainViewModels.firstIndex { $0.name == vm.name }
-        mainViewModels.remove(at: index!)
+        guard let index = mainViewModels.firstIndex(where: { $0.name == vm.name }) else { return }
+        mainViewModels.remove(at: index)
     }
     
     func didTapPlayButton(_ vm: MainViewModel) {

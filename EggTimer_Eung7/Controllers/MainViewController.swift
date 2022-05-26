@@ -147,22 +147,6 @@ extension MainViewController: UITableViewDataSource {
         let list = viewModel.mainViewModels[indexPath.row]
         cell.setData(list)
         cell.delegate = self
-        cell.deleteAnimation = {
-                for i in indexPath.row...self.viewModel.mainViewModels.count {
-                let indexPath = IndexPath(row: i, section: 0)
-                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
-                    guard let cell = tableView.cellForRow(at: indexPath) else { return }
-                    cell.frame.origin.y -= cell.frame.height
-                } completion: { done in
-                    if done {
-                        tableView.reloadData()
-                    }
-                }
-            }
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
-                self.tableFooterView.frame.origin.y -= cell.frame.height
-            }, completion: nil)
-        }
         return cell
     }
 }
@@ -183,7 +167,26 @@ extension MainViewController: MainTableViewCellDelegate, MainTableFooterViewDele
     
     // MARK: DeleteButton
     func didTapDeleteButton(_ vm: MainViewModel) {
+        guard let index = viewModel.mainViewModels.firstIndex(where: { $0.name == vm.name }) else { return }
         viewModel.removeMainViewModels(vm)
+        deleteAnimation(index)
+    }
+    
+    private func deleteAnimation(_ index: Int) {
+        for i in index...viewModel.mainViewModels.count { /// count는 1부터 센다...!
+            let indexPath = IndexPath(row: i, section: 0)
+            guard let cell = tableView.cellForRow(at: indexPath) else { return }
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+                cell.frame.origin.y -= cell.frame.height
+            }, completion: { done in
+                if done {
+                    self.tableView.reloadData()
+                }
+            })
+        }
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+            self.tableFooterView.frame.origin.y -= self.tableView.visibleCells[0].frame.height
+        }, completion: nil)
     }
     
     // MARK: PlayButton
