@@ -15,6 +15,7 @@ protocol MainViewControllerDelegate: AnyObject {
 
 class MainViewController: UIViewController {
     let viewModel = MainListViewModel()
+    let notificationCenter = UNUserNotificationCenter.current()
     weak var delegate: MainViewControllerDelegate?
     
     var timeLabel: UILabel = {
@@ -43,6 +44,8 @@ class MainViewController: UIViewController {
         config.baseForegroundColor = .label
         config.title = "Start"
         let button = UIButton(configuration: config)
+        button.setTitle("Pause", for: .selected)
+        button.setTitle("Start", for: .normal)
         button.addTarget(self, action: #selector(didTapStartPauseButton(_:)), for: .touchUpInside)
         
         return button
@@ -82,11 +85,6 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
     }
     
     func updateUI() {
@@ -203,7 +201,6 @@ extension MainViewController: MainTableViewCellDelegate, MainTableFooterViewDele
         guard let currentFoodVM = viewModel.currentFoodVM else { return }
         sender.isSelected = !sender.isSelected; let state = sender.isSelected
         if state {
-            sender.setTitle("Pause", for: .selected)
             title = String(format: "⏰ %@ ⏰", currentFoodVM.name)
             viewModel.timer = Timer.scheduledTimer(
                 timeInterval: 1,
@@ -227,7 +224,7 @@ extension MainViewController: timeDelivery {
     }
     
     func sceneWillEnterForeground(_ interval: Int) {
-        viewModel.remainingTime -= interval
+        viewModel.remainingTime? -= interval
         viewModel.timer = Timer.scheduledTimer(
             timeInterval: 1,
             target: self,
@@ -241,7 +238,17 @@ extension MainViewController: timeDelivery {
 // MARK: TimeObserver
 extension MainViewController {
     @objc func timerObserver() {
-        viewModel.timerObserver() { timeLabel.text = $0 }
+        viewModel.timerObserver { done, timeString in
+            if done == false {
+                timeLabel.text = timeString
+            } else if done == true {
+                guard let vm = self.viewModel.currentFoodVM else { return }
+                self.timeLabel.text = self.viewModel.didTapResetButton(vm) {
+                    self.startPauseButton.isSelected = false
+                    self.title = vm.name
+                }
+            }
+        }
     }
 }
 

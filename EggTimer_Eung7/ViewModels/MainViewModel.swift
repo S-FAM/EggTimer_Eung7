@@ -5,8 +5,8 @@
 //  Created by 김응철 on 2022/05/16.
 //
 
-import Foundation
 import UIKit
+import UserNotifications
 
 struct MainViewModel {
     let food: Food
@@ -29,7 +29,7 @@ class MainListViewModel {
     var mainViewModels: [MainViewModel]
     
     var currentFoodVM: MainViewModel?
-    var remainingTime: Int = 0
+    var remainingTime: Int?
     var timer = Timer()
     
     init() {
@@ -40,6 +40,12 @@ class MainListViewModel {
             MainViewModel(food: Food(name: "Plank", seconds: 180)),
             MainViewModel(food: Food(name: "Cooking Instant Noodle", seconds: 180))
         ]
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { success, error in
+            if let error = error {
+                print(error)
+            }
+        }
     }
 }
 
@@ -75,12 +81,29 @@ extension MainListViewModel { // View의 로직모음
 }
 
 extension MainListViewModel {
-    @objc func timerObserver(_ completion: (String) -> Void) {
+    @objc func timerObserver(_ completion: (Bool, String) -> Void) {
+        // TODO: [x] 시간이 완료되면 푸쉬알림 보내기
+        guard var remainingTime = remainingTime else { return }
         if remainingTime > 0 {
             remainingTime -= 1
             let time = TimeTransforming.shared.secondsToMinutesSeconds(remainingTime)
             let timeString = TimeTransforming.shared.stringFromTime(time.0, time.1)
-            completion(timeString)
+            self.remainingTime = remainingTime
+            completion(false, timeString)
+        } else if remainingTime == 0 || remainingTime < 0 {
+            timer.invalidate()
+            completion(true, "")
+            setupNotification()
         }
+    }
+    
+    func setupNotification() {
+        let contents = UNMutableNotificationContent()
+        contents.title = "⏰ 시간이 다됐어요! ⏰"
+        contents.body = "어서빨리 음식을 봐주세요!"
+        contents.badge = 1
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: "timerDone", content: contents, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
     }
 }
