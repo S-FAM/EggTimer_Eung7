@@ -24,7 +24,6 @@ class ContainerViewController: UIViewController {
         addChildVCs()
     }
     
-    // TODO: [] 이 메서드 이해하기
     func addChildVCs() {
         // Menu
         menuVC.delegate = self

@@ -21,31 +21,49 @@ class MainViewController: UIViewController {
     var timeLabel: UILabel = {
         let label = UILabel()
         label.text = "00:00"
-        label.font = .systemFont(ofSize: 100, weight: .bold)
+        label.font = .systemFont(ofSize: 100, weight: .heavy)
+        label.textColor = .systemBackground
         
         return label
     }()
     
     lazy var resetButton: UIButton = {
         var config = UIButton.Configuration.filled()
-        config.title = "Reset"
-        config.baseBackgroundColor = .orange
+        var attText = AttributedString.init("Reset")
+        attText.font = .systemFont(ofSize: 18.0, weight: .light)
+        config.attributedTitle = attText
+        config.baseBackgroundColor = .systemBackground
+        config.baseForegroundColor = .label
+        config.background.strokeWidth = 2
+        config.background.strokeColor = .label
         config.cornerStyle = .capsule
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapResetButton(_:)), for: .touchUpInside)
-        
+    
         return button
     }()
     
     lazy var startPauseButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.cornerStyle = .capsule
-        config.baseBackgroundColor = .systemGray6
+        config.baseBackgroundColor = .systemBackground
         config.baseForegroundColor = .label
+        config.background.strokeWidth = 2
+        config.background.strokeColor = .label
         config.title = "Start"
+        
         let button = UIButton(configuration: config)
-        button.setTitle("Pause", for: .selected)
-        button.setTitle("Start", for: .normal)
+        button.configurationUpdateHandler = { button in
+            switch button.state {
+            case .selected:
+                var config = button.configuration
+                config?.showsActivityIndicator = true
+                config?.title = nil
+                button.configuration = config
+            default:
+                button.configuration?.showsActivityIndicator = false
+            }
+        }
         button.addTarget(self, action: #selector(didTapStartPauseButton(_:)), for: .touchUpInside)
         
         return button
@@ -70,7 +88,7 @@ class MainViewController: UIViewController {
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .systemYellow
+        tableView.backgroundColor = .darkGray
         tableView.register(MainTableViewCell.self,
                            forCellReuseIdentifier: MainTableViewCell.identifier)
         tableView.estimatedRowHeight = 80
@@ -85,12 +103,17 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
+        buttonState()
+    }
+    
+    func buttonState() {
     }
     
     func updateUI() {
-        view.backgroundColor = .systemYellow
+        view.backgroundColor = .darkGray
         title = "What do you up to?"
-        navigationController?.navigationBar.tintColor = .label
+        navigationController?.navigationBar.tintColor = .systemBackground
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.systemBackground]
         
         [ timeLabel, resetButton, startPauseButton, bottomLineView, tableView ]
             .forEach { view.addSubview($0) }

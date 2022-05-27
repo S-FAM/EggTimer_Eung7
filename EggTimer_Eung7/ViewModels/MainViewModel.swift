@@ -82,7 +82,6 @@ extension MainListViewModel { // View의 로직모음
 
 extension MainListViewModel {
     @objc func timerObserver(_ completion: (Bool, String) -> Void) {
-        // TODO: [x] 시간이 완료되면 푸쉬알림 보내기
         guard var remainingTime = remainingTime else { return }
         if remainingTime > 0 {
             remainingTime -= 1
@@ -97,6 +96,7 @@ extension MainListViewModel {
         }
     }
     
+    // TODO: [x] 시간이 완료되면 푸쉬알림 보내기
     func setupNotification() {
         let contents = UNMutableNotificationContent()
         contents.title = "⏰ 시간이 다됐어요! ⏰"

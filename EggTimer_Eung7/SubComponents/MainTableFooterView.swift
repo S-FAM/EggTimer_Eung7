@@ -27,7 +27,7 @@ class MainTableFooterView: UITableViewHeaderFooterView {
         config.image = UIImage(systemName: "plus")
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 20)
         config.baseBackgroundColor = .clear
-        config.baseForegroundColor = .black
+        config.baseForegroundColor = .systemBackground
         
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
