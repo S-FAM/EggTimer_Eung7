@@ -9,7 +9,7 @@ import UIKit
 
 // TODO: [x] Timer가 백그라운드에서도 잘 작동되도록 하기.
 protocol timeDelivery: AnyObject {
-    func sceneWillEnterForeground(_ interval: Int)
+    func sceneWillEnterForeground(_ interval: Int, isvalid: Bool)
     func sceneDidEnterBackground()
 }
 
@@ -35,6 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         guard let recentlyTime = UserDefaults.standard.object(forKey: "BackGround") as? Date else { return }
         let interval = Int(Date().timeIntervalSince(recentlyTime))
-        delegate?.sceneWillEnterForeground(interval)
+        let isvalid = UserDefaults.standard.bool(forKey: "IsValid")
+        delegate?.sceneWillEnterForeground(interval, isvalid: isvalid)
     }
 }

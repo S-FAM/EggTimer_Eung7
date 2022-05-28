@@ -53,17 +53,6 @@ class MainViewController: UIViewController {
         config.title = "Start"
         
         let button = UIButton(configuration: config)
-        button.configurationUpdateHandler = { button in
-            switch button.state {
-            case .selected:
-                var config = button.configuration
-                config?.showsActivityIndicator = true
-                config?.title = nil
-                button.configuration = config
-            default:
-                button.configuration?.showsActivityIndicator = false
-            }
-        }
         button.addTarget(self, action: #selector(didTapStartPauseButton(_:)), for: .touchUpInside)
         
         return button
@@ -107,6 +96,18 @@ class MainViewController: UIViewController {
     }
     
     func buttonState() {
+        startPauseButton.configurationUpdateHandler = { button in
+            switch button.state {
+            case .selected:
+                var config = button.configuration
+                config?.showsActivityIndicator = true
+                config?.title = nil
+                button.configuration = config
+            default:
+                button.configuration?.showsActivityIndicator = false
+                button.configuration?.title = "Start"
+            }
+        }
     }
     
     func updateUI() {
@@ -243,18 +244,22 @@ extension MainViewController: MainTableViewCellDelegate, MainTableFooterViewDele
 // MARK: Enter BackGround or ForeGround
 extension MainViewController: timeDelivery {
     func sceneDidEnterBackground() {
+        print(viewModel.timer.isValid)
+        UserDefaults.standard.setValue(viewModel.timer.isValid, forKey: "IsValid")
         viewModel.timer.invalidate()
     }
     
-    func sceneWillEnterForeground(_ interval: Int) {
-        viewModel.remainingTime? -= interval
-        viewModel.timer = Timer.scheduledTimer(
-            timeInterval: 1,
-            target: self,
-            selector: #selector(timerObserver),
-            userInfo: nil,
-            repeats: true
-        )
+    func sceneWillEnterForeground(_ interval: Int, isvalid: Bool) {
+        if isvalid {
+            viewModel.remainingTime? -= interval
+            viewModel.timer = Timer.scheduledTimer(
+                timeInterval: 1,
+                target: self,
+                selector: #selector(timerObserver),
+                userInfo: nil,
+                repeats: true
+            )
+        }
     }
 }
 
