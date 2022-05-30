@@ -18,7 +18,7 @@
 + You will play timer from selected item in your list.
 + You will remove specific item when trash button tapped.
 
-## Playing
+## Add Stuff
 ![image](https://user-images.githubusercontent.com/97531269/170821123-5c065a3c-65c8-4d47-bfe6-c0cd62c26448.png)
 + You will add new stuff when tap plus button.
 + as above image, you can select timer time and label.
