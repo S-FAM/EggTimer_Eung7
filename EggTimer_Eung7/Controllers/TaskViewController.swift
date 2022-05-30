@@ -275,17 +275,9 @@ extension TaskViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 
 // MARK: PanModal Controller
 extension TaskViewController: PanModalPresentable {
-    var panScrollable: UIScrollView? {
-        return nil
-    }
-    
-    var shortFormHeight: PanModalHeight {
-        return .contentHeight(300)
-    }
-    
-    var longFormHeight: PanModalHeight {
-        return .contentHeight(keyboardHeight + 180)
-    }
+    var panScrollable: UIScrollView? { return nil }
+    var shortFormHeight: PanModalHeight { return .contentHeight(300) }
+    var longFormHeight: PanModalHeight { return .contentHeight(keyboardHeight + 180) }
 }
 
 // MARK: Keyboard methods
